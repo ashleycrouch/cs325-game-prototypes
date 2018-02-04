@@ -21,8 +21,34 @@ window.onload = function() {
     var bouncy;
     
     function create() {
+
+        var pixelWidth = 6;
+        var pixelHeight = 6;
+    
+        var chick = [
+            '...55.......',
+            '.....5......',
+            '...7888887..',
+            '..788888887.',
+            '..888088808.',
+            '..888886666.',
+            '..8888644444',
+            '..8888645555',
+            '888888644444',
+            '88788776555.',
+            '78788788876.',
+            '56655677776.',
+            '456777777654',
+            '.4........4.'
+        ];
+    
+        game.create.texture('chick', chick, pixelWidth, pixelHeight);
+        bouncy = game.add.sprite(game.world.centerX, game.world.centerY, 'chick');
+
+
+
         // Create a sprite at the center of the screen using the 'logo' image.
-        bouncy = game.add.sprite( game.world.centerX, game.world.centerY, 'ghost' );
+        //bouncy = game.add.sprite( game.world.centerX, game.world.centerY, 'ghost' );
         // Anchor the sprite at its center, as opposed to its top-left corner.
         // so it will be truly centered.
         bouncy.anchor.setTo( 0.5, 0.5 );
