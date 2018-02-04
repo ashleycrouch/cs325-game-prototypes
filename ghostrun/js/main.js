@@ -15,7 +15,7 @@ window.onload = function() {
     function preload() {
         // Load an image and call it 'logo'.
         //game.load.image( 'logo', 'assets/phaser.png' );
-        game.load.image( 'ghost', 'assets/tempghost.jpg' );
+        //game.load.image( 'ghost', 'assets/tempghost.jpg' );
     }
     
     var bouncy;
@@ -24,6 +24,24 @@ window.onload = function() {
 
         var pixelWidth = 6;
         var pixelHeight = 6;
+
+        var ghost = [
+            '...111111...',
+            '..12222221..',
+            '.1222222221.',
+            '122222222221',
+            '122222222221',
+            '122222222221',
+            '122222222221',
+            '122222222221',
+            '122222222221',
+            '122222222221',
+            '122222222221',
+            '122222222221',
+            '112121212121',
+            '1.1.1.1.1.1.'
+
+        ];
     
         var chick = [
             '...55.......',
@@ -42,8 +60,8 @@ window.onload = function() {
             '.4........4.'
         ];
     
-        game.create.texture('chick', chick, pixelWidth, pixelHeight);
-        bouncy = game.add.sprite(game.world.centerX, game.world.centerY, 'chick');
+        game.create.texture('ghost', chick, pixelWidth, pixelHeight);
+        bouncy = game.add.sprite(game.world.centerX, game.world.centerY, 'ghost');
 
 
 
