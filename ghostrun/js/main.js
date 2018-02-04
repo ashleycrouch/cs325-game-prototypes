@@ -60,7 +60,7 @@ window.onload = function() {
             '.4........4.'
         ];
     
-        game.create.texture('ghost', chick, pixelWidth, pixelHeight);
+        game.create.texture('ghost', ghost, pixelWidth, pixelHeight);
         bouncy = game.add.sprite(game.world.centerX, game.world.centerY, 'ghost');
 
 
