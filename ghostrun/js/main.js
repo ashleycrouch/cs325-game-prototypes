@@ -16,6 +16,24 @@ window.onload = function() {
         // Load an image and call it 'logo'.
         //game.load.image( 'logo', 'assets/phaser.png' );
         //game.load.image( 'ghost', 'assets/tempghost.jpg' );
+
+
+        var wall = [
+            '33333333',
+            '33333333',
+            '33333333',
+            '33333333',
+            '33333333',
+            '33333333',
+            '33333333',
+            '33333333',
+            '33333333',
+            '33333333',
+            '33333333',
+            '33333333',
+            '33333333',
+            '33333333'
+        ]
     }
     
     var bouncy;
@@ -61,6 +79,9 @@ window.onload = function() {
     
         game.create.texture('ghost', ghost, pixelWidth, pixelHeight);
         bouncy = game.add.sprite(game.world.centerX, game.world.centerY, 'ghost');
+
+        game.create.texture('wall', wall, pixelWidth, pixelHeight);
+        bouncy = game.add.sprite(game.world.centerX, 0, 'wall');
 
 
 
