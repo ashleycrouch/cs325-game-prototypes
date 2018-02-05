@@ -39,15 +39,15 @@ window.onload = function() {
             '1.1.1.1.1.1.'
         ];
 
-        var ground = [
-            '44444444444444444444444444443',
-            '44444444444444444444444444443',
-            '44444444444444444444444444443'
-        ]
+        // var ground = [
+        //     '44444444444444444444444444443',
+        //     '44444444444444444444444444443',
+        //     '44444444444444444444444444443'
+        // ]
 
 
         game.create.texture('ghost', ghost, pixelWidth, pixelHeight);
-        game.create.texture('ground', ground, pixelWidth, pixelHeight);
+        //game.create.texture('ground', ground, pixelWidth, pixelHeight);
         game.add.sprite(game.world.centerX, game.world.centerY, 'ghost');
 
         //uses the Arcade physics system
