@@ -11,11 +11,18 @@ window.onload = function() {
     // All loading functions will typically all be found inside "preload()".
     
     var game = new Phaser.Game( 800, 600, Phaser.AUTO, 'game', { preload: preload, create: create, update: update } );
-
-    var ghost;
-    var ground;
     function preload() {
-        ghost = [
+        
+        //load the images in here
+        //game.load.image('sky', 'assets/sky.png');
+        //game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
+    }
+    function create() {
+
+        var pixelWidth = 6;
+        var pixelHeight = 6;
+
+        var ghost = [
             '...111111...',
             '..12222221..',
             '.1222222221.',
@@ -32,19 +39,13 @@ window.onload = function() {
             '1.1.1.1.1.1.'
         ];
 
-        ground = [
+        var ground = [
             '44444444444444444444444444443',
             '44444444444444444444444444443',
             '44444444444444444444444444443'
         ]
-        //load the images in here
-        //game.load.image('sky', 'assets/sky.png');
-        //game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
-    }
-    function create() {
 
-        var pixelWidth = 6;
-        var pixelHeight = 6;
+
         game.create.texture('ghost', ghost, pixelWidth, pixelHeight);
         game.create.texture('ground', ground, pixelWidth, pixelHeight);
         game.add.sprite(game.world.centerX, game.world.centerY, 'ghost');
