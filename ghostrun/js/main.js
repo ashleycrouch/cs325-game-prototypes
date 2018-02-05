@@ -12,24 +12,55 @@ window.onload = function() {
     
     var game = new Phaser.Game( 800, 600, Phaser.AUTO, 'game', { preload: preload, create: create, update: update } );
 
+    var ghost;
+    var ground;
     function preload() {
+        ghost = [
+            '...111111...',
+            '..12222221..',
+            '.1222222221.',
+            '122222222221',
+            '122222222221',
+            '122222222221',
+            '122222222221',
+            '122222222221',
+            '122222222221',
+            '122222222221',
+            '122222222221',
+            '122222222221',
+            '112121212121',
+            '1.1.1.1.1.1.'
+        ];
+
+        ground = [
+            '44444444444444444444444444443',
+            '44444444444444444444444444443',
+            '44444444444444444444444444443'
+        ]
         //load the images in here
         //game.load.image('sky', 'assets/sky.png');
         //game.load.spritesheet('dude', 'assets/dude.png', 32, 48);
     }
     function create() {
+
+        var pixelWidth = 6;
+        var pixelHeight = 6;
+        game.create.texture('ghost', ghost, pixelWidth, pixelHeight);
+        game.create.texture('ground', ground, pixelWidth, pixelHeight);
+        game.add.sprite(game.world.centerX, game.world.centerY, 'ghost');
+
         //uses the Arcade physics system
         game.physics.startSystem(Phaser.Physics.ARCADE);
 
         //add a background
-        game.add.sprite(0, 0, 'sky');
+        //game.add.sprite(0, 0, 'sky');
 
         //the platforms group contains the ground and the two ledges we can jump on
         platforms = game.add.group();
 
         //we will enable physics for any object that is created in this group
         platforms.enableBody = true;
-        //enableBody = add rigidbody
+        //enableBody = add rigidbody?
 
         //here we create the ground
         var ground = platforms.create(0, game.world.height - 64, 'ground');
@@ -48,7 +79,7 @@ window.onload = function() {
         ledge.body.immovable = true;
 
         //the player and its settings
-        player = game.add.sprite(32, game.world.height - 150, 'dude');
+        player = game.add.sprite(32, game.world.height - 150, 'ghost');
 
         //enable physics on the player
         game.physics.arcade.enable(player);
@@ -59,8 +90,8 @@ window.onload = function() {
         player.body.collideWorldBounds = true;
 
         //add animations
-        player.animations.add('left', [0, 1, 2, 3], 10, true);
-        player.animations.add('right', [5, 6, 7, 8], 10, true);
+        //player.animations.add('left', [0, 1, 2, 3], 10, true);
+        //player.animations.add('right', [5, 6, 7, 8], 10, true);
     }
 
       
