@@ -33,8 +33,8 @@ GameStates.makeGame = function( game, shared ) {
 
            //makes the streets that the chicken will walk across
             streets.createMultiple(4, 'roadpiece', 0, true);
-            streets.align(4, -1, 0, 0);
-            streets.height = 75;
+            streets.align(4, -1, 0, 500);
+            streets.height = game.world.height;
 
 
 
