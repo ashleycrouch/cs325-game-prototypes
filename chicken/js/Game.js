@@ -71,7 +71,7 @@ GameStates.makeGame = function( game, shared ) {
 
             //  Create our Timer
             timer = game.time.create(false);
-            //  Set a TimerEvent to occur after 2 seconds
+            //  Set a TimerEvent to occur after 4 seconds
             timer.loop(4000, [spawnCar(100, true), spawnCar(300, false), spawnCar(500, true)], this);
             //  Start the timer running - this is important!
             //  It won't start automatically, allowing you to hook it to button events and the like.
