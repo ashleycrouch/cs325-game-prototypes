@@ -3,9 +3,13 @@
 GameStates.makeGame = function( game, shared ) {
     // Create your own variables.
     let chicken;
+    var cars;
+    var streets;
     var score = 0;
     var difficulty;
     var cursors;
+
+    var timer;
     
     function quitGame() {
 
@@ -16,6 +20,19 @@ GameStates.makeGame = function( game, shared ) {
         game.state.start('MainMenu');
 
     }
+
+    function spawnCar(){
+
+        let newCar = cars.create(0, 100, 'car');
+        newCar.scale.setTo(0.05, 0.05);
+        newCar.anchor.setTo(0.5, 0.5);
+        newCar.angle = 270;
+        game.physics.enable(newCar, Phaser.Physics.ARCADE);
+        
+        //random number stuff for determining the speed of the cars on a street
+         newCar.body.velocity.x = game.rnd.integerInRange(50, 100);
+
+     }
     
     return {
     
@@ -24,37 +41,11 @@ GameStates.makeGame = function( game, shared ) {
         //  redcar
         create: function () {
 
-            // game.stage.backgroundColor = '#24c927';
-            // ballNoise = game.sound.add('ballnoise');
-    
-            // bouncy = game.add.sprite( game.world.centerX, game.world.centerY, 'golfball' );
-            // bouncy.scale.setTo(0.5, 0.5);
-            // // Anchor the sprite at its center, as opposed to its top-left corner.
-            // // so it will be truly centered.
-            // bouncy.anchor.setTo( 0.25, 0.25 );
-            
-            // // Turn on the arcade physics engine for this sprite.
-            // game.physics.enable( bouncy, Phaser.Physics.ARCADE );
-           
-            // bouncy.body.velocity.y = 200;
-            // bouncy.body.velocity.x = 200;
-            // bouncy.body.bounce.y = 1;
-            // bouncy.body.bounce.x = 1;
-    
-            // // Make it bounce off of the world bounds.
-            // bouncy.body.collideWorldBounds = true;
-            // //sets up the collision signal for listening for
-            // //colliding with the world bounds
-            // bouncy.body.onWorldBounds = new Phaser.Signal();
-            // bouncy.body.onWorldBounds.add(playBounce, this);
-
-
-
             //change background color
             game.stage.backgroundColor = '#24c927';
 
-            var streets = game.add.group();
-            var cars = game.add.group(); 
+            streets = game.add.group();
+            cars = game.add.group(); 
 
             // var carCollisionGroup = game.physics.ARCADE.createCollisionGroup();
             // var streetCollisionGroup = game.physics.ARCADE.createCollisionGroup();
@@ -70,6 +61,15 @@ GameStates.makeGame = function( game, shared ) {
             //keyboard inputs
             cursors = game.input.keyboard.createCursorKeys();
 
+            //  Create our Timer
+            timer = game.time.create(false);
+            //  Set a TimerEvent to occur after 2 seconds
+            timer.loop(2000, function() {spawnCar();}, this);
+            //  Start the timer running - this is important!
+            //  It won't start automatically, allowing you to hook it to button events and the like.
+            timer.start();
+
+
             //create chicken
             chicken = game.add.sprite(game.world.centerX, game.world.height, 'chicken');
             chicken.scale.setTo(0.25, 0.25);
@@ -83,9 +83,7 @@ GameStates.makeGame = function( game, shared ) {
             chicken.body.collideWorldBounds = true;
             chicken.checkWorldBounds = true;
 
-            //random number stuff for determining the speed of the cars on a street
-            //game.rnd.integerInRange(0, 10);
-
+           
           
             game.physics.arcade.checkCollision.up = false;  // Enable collision for all world bounds except right
             chicken.body.onOutOfBounds = new Phaser.Signal();
@@ -93,7 +91,12 @@ GameStates.makeGame = function( game, shared ) {
             //all.events.onOutOfBounds.add(nextLevel(), this);
         
         },
-    
+       
+        nextLevel: function(){
+            create();
+            //set score so score keeps going
+            difficulty++;
+        },
         update: function () {
 
             let chickSpeed = 150;
@@ -116,20 +119,6 @@ GameStates.makeGame = function( game, shared ) {
                 chicken.body.velocity.x = 0;
                 chicken.body.velocity.y = 0;
             }
-
-        },
-
-        moveChicken: function(){
-
-        },
-
-        spawnCar: function(){
-
-        },
-        nextLevel: function(){
-            create();
-            //set score so score keeps going
-            difficulty++;
         }
     };
 };
