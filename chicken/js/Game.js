@@ -112,7 +112,7 @@ GameStates.makeGame = function( game, shared ) {
         },
         update: function () {
 
-            let chickSpeed = 150;
+            let chickSpeed = 50;
             if(cursors.left.isDown)
             {
                 chicken.body.velocity.x = -chickSpeed;
