@@ -21,17 +21,25 @@ GameStates.makeGame = function( game, shared ) {
 
     }
 
-    function spawnCar(){
+    function spawnCar(streetCoord, onLeft){
 
-        let newCar = cars.create(0, 100, 'car');
-        newCar.scale.setTo(0.05, 0.05);
-        newCar.anchor.setTo(0.5, 0.5);
-        newCar.angle = 270;
-        game.physics.enable(newCar, Phaser.Physics.ARCADE);
-        
-        //random number stuff for determining the speed of the cars on a street
-         newCar.body.velocity.x = game.rnd.integerInRange(50, 100);
-
+        if(onLeft == true)
+        {
+            let newCar = cars.create(0, streetCoord, 'car');
+            game.physics.enable(newCar, Phaser.Physics.ARCADE);
+            newCar.body.velocity.x = game.rnd.integerInRange(50, 100);
+            newCar.scale.setTo(0.05, 0.05);
+            newCar.anchor.setTo(0.5, 0.5);
+            newCar.angle = 270;
+        }
+        else{
+            let newCar = cars.create(game.world.width, streetCoord, 'car');
+            game.physics.enable(newCar, Phaser.Physics.ARCADE);
+            newCar.body.velocity.x = -game.rnd.integerInRange(50, 100);
+            newCar.scale.setTo(0.05, 0.05);
+            newCar.anchor.setTo(0.5, 0.5);
+            newCar.angle = 90;
+        }
      }
     
     return {
@@ -41,13 +49,14 @@ GameStates.makeGame = function( game, shared ) {
         //  redcar
         create: function () {
 
+            game.physics.startSystem(Phaser.Physics.P2JS);
             //change background color
             game.stage.backgroundColor = '#24c927';
 
             streets = game.add.group();
             cars = game.add.group(); 
 
-            // var carCollisionGroup = game.physics.ARCADE.createCollisionGroup();
+            var carCollisionGroup = game.physics.p2.createCollisionGroup();
             // var streetCollisionGroup = game.physics.ARCADE.createCollisionGroup();
 
 
@@ -57,14 +66,13 @@ GameStates.makeGame = function( game, shared ) {
             streets.y = 50;
             streets.height = game.world.height - 100;
 
-
             //keyboard inputs
             cursors = game.input.keyboard.createCursorKeys();
 
             //  Create our Timer
             timer = game.time.create(false);
             //  Set a TimerEvent to occur after 2 seconds
-            timer.loop(2000, function() {spawnCar();}, this);
+            timer.loop(4000, [spawnCar(100, true), spawnCar(300, false), spawnCar(500, true)], this);
             //  Start the timer running - this is important!
             //  It won't start automatically, allowing you to hook it to button events and the like.
             timer.start();
@@ -74,9 +82,14 @@ GameStates.makeGame = function( game, shared ) {
             chicken = game.add.sprite(game.world.centerX, game.world.height, 'chicken');
             chicken.scale.setTo(0.25, 0.25);
             chicken.anchor.setTo(0.5, 0.5);
-             
+
             // Turn on the arcade physics engine for this sprite.
-            game.physics.enable(chicken, Phaser.Physics.ARCADE);
+            game.physics.enable(chicken, Phaser.Physics.p2);
+
+            //chicken.body.setCollisionGroup(carCollisionGroup);
+            //chicken.body.collides(carCollisionGroup, quitGame, this);
+             
+            
     
             // Make it bounce off of the world bounds
             //chicken.body.enable = true;
