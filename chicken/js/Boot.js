@@ -37,7 +37,7 @@ GameStates.makeBoot = function( game ) {
             
             game.load.image('roadpiece', 'assets/roadpiece.jpg');
             game.load.image('car', 'assets/redcar.png');
-    
+            game.load.image('chicken', 'assets/chicken.png');
         },
     
         create: function () {
