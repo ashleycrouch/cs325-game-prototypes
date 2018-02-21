@@ -6,7 +6,6 @@ GameStates.makeGame = function( game, shared ) {
     var stars;
     var cursors;
 
-    
     function quitGame() {
 
         //  Here you should destroy anything you no longer need.
@@ -17,16 +16,21 @@ GameStates.makeGame = function( game, shared ) {
 
     }
 
-    //not sure if I need this
-    function checkBounds(star) {
+function fire() {
 
-        if (star.y > 600)
+    var star = stars.getFirstExists(false);
+
+        if (star)
         {
-            star.kill();
-        }
-    
-    }
+            star.frame = game.rnd.integerInRange(0,6);
+            star.exists = true;
+            star.reset(game.world.randomX, 0);
 
+            star.body.bounce.y = 0.8;
+       }
+
+    } 
+    
     //this will turn into a catching thing for the basket
     function reflect(a, star) {
 
@@ -43,6 +47,16 @@ GameStates.makeGame = function( game, shared ) {
         }
     }
     
+    //not sure if I need this
+    function checkBounds(star) {
+
+        if (star.y > 600)
+        {
+            star.kill();
+        }
+    
+    }
+
     return {
 
 
@@ -51,36 +65,29 @@ GameStates.makeGame = function( game, shared ) {
 
             game.stage.backgroundColor = '#2d2d2d';
 
+            
+
             stars = game.add.group();
+            stars.createMultiple(250, 'stars', 0, false);
+
+            basket = game.add.sprite(game.world.centerX, game.world.height-150, 'basket');
+
+            game.physics.arcade.gravity.y = 400;
+
             game.physics.arcade.enable(game.world, true);
 
-            atari.body.allowGravity = 0;
-            atari.body.immovable = true;
+            basket.body.allowGravity = 0;
+            basket.body.immovable = true;
 
             cursors = game.input.keyboard.createCursorKeys();
+
+            game.time.events.loop(150, fire, this);
+
             game.add.text(16, 16, 'Left / Right to move', { font: '18px Arial', fill: '#ffffff' });
 
 
-
-
-
-
-            //  Honestly, just about anything could go here. It's YOUR game after all. Eat your heart out!
-            
-            // Create a sprite at the center of the screen using the 'logo' image.
-            bouncy = game.add.sprite( game.world.centerX, game.world.centerY, 'logo' );
-            // Anchor the sprite at its center, as opposed to its top-left corner.
-            // so it will be truly centered.
-            bouncy.anchor.setTo( 0.5, 0.5 );
-            
-            // Turn on the arcade physics engine for this sprite.
-            game.physics.enable( bouncy, Phaser.Physics.ARCADE );
-            // Make it bounce off of the world bounds.
-            bouncy.body.collideWorldBounds = true;
-            
-            // When you click on the sprite, you go back to the MainMenu.
-            bouncy.inputEnabled = true;
-            bouncy.events.onInputDown.add( function() { quitGame(); }, this );
+           // bouncy.inputEnabled = true;
+           // bouncy.events.onInputDown.add( function() { quitGame(); }, this );
         },
     
         update: function () {
@@ -97,7 +104,7 @@ GameStates.makeGame = function( game, shared ) {
                 basket.body.velocity.x = 200;
             }
         
-            balls.forEachAlive(checkBounds, this);
+            stars.forEachAlive(checkBounds, this);
         
         }
     };
