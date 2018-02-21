@@ -6,6 +6,9 @@ GameStates.makeGame = function( game, shared ) {
     var stars;
     var cursors;
 
+    var score = 0;
+    var scoreText;
+
     function quitGame() {
 
         //  Here you should destroy anything you no longer need.
@@ -32,19 +35,22 @@ function fire() {
     } 
     
     //this will turn into a catching thing for the basket
-    function reflect(a, star) {
+    function updateScore(a, star) {
 
-        if (star.y > (basket.y + 5))
-        {
-            return true;
-        }
-        else
-        {
-            star.body.velocity.x = basket.body.velocity.x;
-            star.body.velocity.y *= -(star.body.bounce.y);
+        // if (star.y > (basket.y + 5))
+        // {
+        //     return true;
+        // }
+        // else
+        // {
+        //    // star.body.velocity.x = basket.body.velocity.x;
+        //     //star.body.velocity.y *= -(star.body.bounce.y);
     
-            return false;
-        }
+        //     return false;
+        // }
+        score++;
+        scoreText.setText("Score: " + score);
+        star.kill();
     }
     
     //not sure if I need this
@@ -70,41 +76,53 @@ function fire() {
             stars = game.add.group();
             stars.createMultiple(250, 'stars', 0, false);
 
+           
             basket = game.add.sprite(game.world.centerX, game.world.height-150, 'basket');
 
             game.physics.arcade.gravity.y = 400;
 
             game.physics.arcade.enable(game.world, true);
 
-            basket.body.allowGravity = 0;
-            basket.body.immovable = true;
+           // basket.body.allowGravity = 0;
+           // basket.body.immovable = true;
 
             cursors = game.input.keyboard.createCursorKeys();
 
             game.time.events.loop(150, fire, this);
 
-            game.add.text(16, 16, 'Left / Right to move', { font: '18px Arial', fill: '#ffffff' });
+            //game.add.text(16, 16, 'Left / Right to move', { font: '18px Arial', fill: '#ffffff' });
+           scoreText = game.add.text(16, 16, 'Score: 0', { font: '18px Arial', fill: '#ffffff' , align: "right"});
 
-
+           basket.body.collideWorldBounds = true;
+           basket.body.onCollide = new Phaser.Signal();
+           basket.body.onCollide.add(updateScore, this);
            // bouncy.inputEnabled = true;
            // bouncy.events.onInputDown.add( function() { quitGame(); }, this );
         },
     
         update: function () {
-            game.physics.arcade.collide(basket, stars, null, reflect, this);
-
+            game.physics.arcade.collide(basket, stars);
+            
+            let basketSpeed = 200;
             basket.body.velocity.x = 0;
         
             if (cursors.left.isDown)
             {
-                basket.body.velocity.x = -200;
+                basket.body.velocity.x = -basketSpeed;
             }
             else if (cursors.right.isDown)
             {
-                basket.body.velocity.x = 200;
+                basket.body.velocity.x = basketSpeed;
             }
         
             stars.forEachAlive(checkBounds, this);
+            
+            stars.children.forEach(function(star){
+                star.anchor.setTo(0.5, 0.5);
+                star.angle += 1;
+            });
+            
+            
         
         }
     };
