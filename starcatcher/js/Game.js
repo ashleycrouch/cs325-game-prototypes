@@ -9,6 +9,9 @@ GameStates.makeGame = function( game, shared ) {
     var score = 0;
     var scoreText;
 
+    var lives = 10;
+    var lifeText;
+
     function quitGame() {
 
         //  Here you should destroy anything you no longer need.
@@ -19,83 +22,66 @@ GameStates.makeGame = function( game, shared ) {
 
     }
 
+    function loseLife(star){
+        star.kill();
+        lives--;
+        lifeText.setText("Lives: " + lives);
+    }
+
 function fire() {
 
+    //stars.createMultiple(50, 'stars', 0, false);
     var star = stars.getFirstExists(false);
 
         if (star)
         {
-            star.frame = game.rnd.integerInRange(0,6);
+            star.frame = game.rnd.integerInRange(0,4);
             star.exists = true;
             star.reset(game.world.randomX, 0);
-
-            star.body.bounce.y = 0.8;
        }
 
     } 
     
     //this will turn into a catching thing for the basket
     function updateScore(a, star) {
-
-        // if (star.y > (basket.y + 5))
-        // {
-        //     return true;
-        // }
-        // else
-        // {
-        //    // star.body.velocity.x = basket.body.velocity.x;
-        //     //star.body.velocity.y *= -(star.body.bounce.y);
-    
-        //     return false;
-        // }
         score++;
         scoreText.setText("Score: " + score);
         star.kill();
     }
-    
-    //not sure if I need this
-    function checkBounds(star) {
-
-        if (star.y > 600)
-        {
-            star.kill();
-        }
-    
-    }
 
     return {
-
 
         create: function () {
             game.physics.startSystem(Phaser.Physics.ARCADE);
 
             game.stage.backgroundColor = '#2d2d2d';
 
-            
-
+            //creates the stars
             stars = game.add.group();
-            stars.createMultiple(250, 'stars', 0, false);
-
+            stars.createMultiple(50, 'stars', 0, false);
            
+            //creates the basket
             basket = game.add.sprite(game.world.centerX, game.world.height-150, 'basket');
 
-            game.physics.arcade.gravity.y = 400;
+            game.physics.arcade.gravity.y = 300;
 
             game.physics.arcade.enable(game.world, true);
 
-           // basket.body.allowGravity = 0;
-           // basket.body.immovable = true;
-
+            //creates cursor input objects
             cursors = game.input.keyboard.createCursorKeys();
 
             game.time.events.loop(150, fire, this);
 
             //game.add.text(16, 16, 'Left / Right to move', { font: '18px Arial', fill: '#ffffff' });
            scoreText = game.add.text(16, 16, 'Score: 0', { font: '18px Arial', fill: '#ffffff' , align: "right"});
-
+            lifeText = game.add.text(16, 16, 'Lives: 10', { font: '18px Arial', fill: '#ffffff' , align: "right"});
+           //basket can collide with world bounds, and when it collides with a star, update the score
            basket.body.collideWorldBounds = true;
            basket.body.onCollide = new Phaser.Signal();
            basket.body.onCollide.add(updateScore, this);
+
+        //    stars.forEach.onWorldBounds = new Phaser.Signal();
+        //    stars.forEachAlive(loseLife, this);
            // bouncy.inputEnabled = true;
            // bouncy.events.onInputDown.add( function() { quitGame(); }, this );
         },
@@ -114,16 +100,11 @@ function fire() {
             {
                 basket.body.velocity.x = basketSpeed;
             }
-        
-            stars.forEachAlive(checkBounds, this);
-            
+            //rotates the star objects as they fall
             stars.children.forEach(function(star){
                 star.anchor.setTo(0.5, 0.5);
                 star.angle += 1;
             });
-            
-            
-        
         }
     };
 };
