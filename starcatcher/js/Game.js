@@ -9,7 +9,7 @@ GameStates.makeGame = function( game, shared ) {
     var score = 0;
     var scoreText;
 
-    var lives = 10;
+    var lives = 5;
     var lifeText;
 
     function quitGame() {
@@ -19,7 +19,8 @@ GameStates.makeGame = function( game, shared ) {
 
         //  Then let's go back to the main menu.
         game.state.start('MainMenu');
-
+        lives = 5;
+        score = 0;
     }
 
     function loseLife(star){
@@ -28,17 +29,14 @@ GameStates.makeGame = function( game, shared ) {
         lifeText.setText("Lives: " + lives);
     }
 
+    //spawns the stars
 function fire() {
 
-    //stars.createMultiple(50, 'stars', 0, false);
-    var star = stars.getFirstExists(false);
-
-        if (star)
-        {
-            star.frame = game.rnd.integerInRange(0,4);
-            star.exists = true;
-            star.reset(game.world.randomX, 0);
-       }
+    let star = stars.create(game.world.randomX, 100, 'stars', game.rnd.between(0, 4));
+    star.body.collideWorldBounds = true;
+    star.body.onWorldBounds = new Phaser.Signal();
+    star.body.onWorldBounds.add(loseLife, this);
+    console.log("star spawn");
 
     } 
     
@@ -52,13 +50,16 @@ function fire() {
     return {
 
         create: function () {
+
             game.physics.startSystem(Phaser.Physics.ARCADE);
 
-            game.stage.backgroundColor = '#2d2d2d';
+            game.stage.backgroundColor = '#003ea3';
 
-            //creates the stars
+            //creates the stars group
             stars = game.add.group();
-            stars.createMultiple(50, 'stars', 0, false);
+            stars.enableBody = true;
+            stars.physicsBodyType = Phaser.Physics.ARCADE;
+            
            
             //creates the basket
             basket = game.add.sprite(game.world.centerX, game.world.height-150, 'basket');
@@ -70,20 +71,18 @@ function fire() {
             //creates cursor input objects
             cursors = game.input.keyboard.createCursorKeys();
 
-            game.time.events.loop(150, fire, this);
+            //loop calls the method that spawns the stars
+            game.time.events.loop(Phaser.Timer.SECOND, fire, this);
 
-            //game.add.text(16, 16, 'Left / Right to move', { font: '18px Arial', fill: '#ffffff' });
-           scoreText = game.add.text(16, 16, 'Score: 0', { font: '18px Arial', fill: '#ffffff' , align: "right"});
-            lifeText = game.add.text(16, 16, 'Lives: 10', { font: '18px Arial', fill: '#ffffff' , align: "right"});
+
+            game.add.text(600, 16, 'Left / Right to move', { font: '18px Arial', fill: '#ffffff' });
+            
+            scoreText = game.add.text(16, 16, 'Score: ' + score, { font: '18px Arial', fill: '#ffffff'});
+            lifeText = game.add.text(game.world.centerX, 16, 'Lives: ' + lives, { font: '18px Arial', fill: '#ffffff'});
            //basket can collide with world bounds, and when it collides with a star, update the score
            basket.body.collideWorldBounds = true;
            basket.body.onCollide = new Phaser.Signal();
            basket.body.onCollide.add(updateScore, this);
-
-        //    stars.forEach.onWorldBounds = new Phaser.Signal();
-        //    stars.forEachAlive(loseLife, this);
-           // bouncy.inputEnabled = true;
-           // bouncy.events.onInputDown.add( function() { quitGame(); }, this );
         },
     
         update: function () {
@@ -105,6 +104,11 @@ function fire() {
                 star.anchor.setTo(0.5, 0.5);
                 star.angle += 1;
             });
+
+            if(lives <= 0)
+            {
+                quitGame();
+            }
         }
     };
 };
