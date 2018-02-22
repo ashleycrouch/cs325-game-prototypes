@@ -79,7 +79,8 @@ function fire() {
             
             scoreText = game.add.text(16, 16, 'Score: ' + score, { font: '18px Arial', fill: '#ffffff'});
             lifeText = game.add.text(game.world.centerX, 16, 'Lives: ' + lives, { font: '18px Arial', fill: '#ffffff'});
-           //basket can collide with world bounds, and when it collides with a star, update the score
+           
+            //basket can collide with world bounds, and when it collides with a star, update the score
            basket.body.collideWorldBounds = true;
            basket.body.onCollide = new Phaser.Signal();
            basket.body.onCollide.add(updateScore, this);
