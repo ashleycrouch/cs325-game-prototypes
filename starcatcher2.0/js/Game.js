@@ -3,19 +3,9 @@
 GameStates.makeGame = function( game, shared ) {
 
     var basketBot;
-    var basketRight;
-    var basketLeft;
-    var basketTop;
     
     var stars;
     var cursors;
-
-    let startingEnemies = 3;
-    let incrementEnemies = 1;
-    let maxEnemies = 20;
-    let initialDelay = Phaser.Timer.SECOND*4;
-    let secondsBetweenEnemyMod = 1;
-    let timer;
 
     var score = 0;
     var scoreText;
@@ -100,37 +90,11 @@ function fire() {
            
             //creates the baskets
             basketBot = game.add.sprite(game.world.centerX, game.world.height-150, 'basket');
-            
-            // basketRight = game.add.sprite(game.world.width - 150, game.world.centerY, 'basket');
-            // basketRight.angle = 270;
-
-            // basketLeft = game.add.sprite(150, game.world.centerY, 'basket');
-            // basketLeft.angle = 90;
-
-            // basketTop = game.add.sprite(game.world.centerX, 150, 'basket');
-            // basketTop.angle = 180;
-            //game.physics.arcade.gravity.y = 300;
 
             game.physics.arcade.enable(game.world, true);
 
             //creates cursor input objects
             cursors = game.input.keyboard.createCursorKeys();
-
-
-            // timer = game.time.create(false);
-            // timer.loop(initialDelay, function(){
-            //     for(var i=0;i<incrementEnemies;i++){
-            //         fire();
-            //     }
-            //     this.delay = initialDelay*secondsBetweenEnemyMod;
-            //     secondsBetweenEnemyMod = Math.max(secondsBetweenEnemyMod-0.1, 0.1);
-            //     //console.log(this.delay);
-            //     scalemod = Math.max(scalemod-0.01, 0.05);
-            //     maxVelocity+=10;
-            //     incrementEnemies = Math.min(8, incrementEnemies+0.2);
-            //     //console.log(incrementEnemies);
-            // }, this);
-            // timer.start();
 
             //loop calls the method that spawns the stars
            game.time.events.loop(Phaser.Timer.SECOND, fire, this);
@@ -145,18 +109,6 @@ function fire() {
             basketBot.body.collideWorldBounds = true;
             basketBot.body.onCollide = new Phaser.Signal();
             basketBot.body.onCollide.add(updateScore, this);
-
-            // basketRight.body.collideWorldBounds = true;
-            // basketRight.body.onCollide = new Phaser.Signal();
-            // basketRight.body.onCollide.add(updateScore, this);
-
-            // basketLeft.body.collideWorldBounds = true;
-            // basketLeft.body.onCollide = new Phaser.Signal();
-            // basketLeft.body.onCollide.add(updateScore, this);
-
-            // basketTop.body.collideWorldBounds = true;
-            // basketTop.body.onCollide = new Phaser.Signal();
-            // basketTop.body.onCollide.add(updateScore, this);
         },
     
         update: function () {
@@ -175,16 +127,6 @@ function fire() {
                 basketBot.body.velocity.x = basketSpeed;
                 // basketTop.body.velocity.x = basketSpeed;
             }
-            // else if(cursors.up.isDown)
-            // {
-            //     basketLeft.body.velocity.y = -basketSpeed;
-            //     basketRight.body.velocity.y = -basketSpeed;
-            // }
-            // else if(cursors.down.isDown)
-            // {
-            //     basketLeft.body.velocity.y = basketSpeed;
-            //     basketRight.body.velocity.y = basketSpeed;
-            // }
 
             //rotates the star objects as they fall
             stars.children.forEach(function(star){
