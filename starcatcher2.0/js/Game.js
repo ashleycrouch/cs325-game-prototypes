@@ -44,7 +44,7 @@ function fire() {
     maxVelocity.y = 250;
     maxVelocity.x = 100;
 
-    let starNum = game.rnd.between(0, 4);
+    let starNum = game.rnd.between(0, 5);
     let star = stars.create(game.world.centerX, 75, 'stars', starNum);
     star.body.collideWorldBounds = true;
 
