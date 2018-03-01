@@ -41,10 +41,8 @@ There is potential for adding a difficulty curve with the way it is set up.
 </li>
 
 <li><strong>Prototype Postmortem:</strong>
-I learned more about generating group objects and timers. I learned that Phaser doesn't really have a way to
-apply listeners for things that happen to an individual object from a group, so how you do that is that
-when they're spawned individually, you add the properties to the object on its own. It's a little silly 
-to do it this way, but it was the easiest method I could find. 
+I made the stars have different point values, and they also move the fastest so that they are 
+harder to catch, and the speed and point values are based on the colors of the stars.
 </li>
 
 <li><strong>Prototype Assets:</strong>
@@ -90,7 +88,7 @@ I just want them to have fun with the whimsicalness of catching stars.
 <li><strong>Gameplay:</strong>
 The basket moves using the left and right arrow keys. The player must move the basket so that they can catch
 as many stars as they can before too many of them touch the bottom of the screen. The player has 5 lives, and they
-lose a life when a star hits the 
+lose a life when a star hits the bottom. 
 </li>
 
 <li><strong>Strategies:</strong>
