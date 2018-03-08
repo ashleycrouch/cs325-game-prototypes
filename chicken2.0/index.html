@@ -1,0 +1,121 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="UTF-8" />
+	<title>Phaser Basic Project Template</title>
+	<script src="js/phaser.min.js"></script>
+	<!-- Boot.js must come first since it creates the BasicGame object
+	that stores all the states. -->
+	<script src="js/Boot.js"></script>
+	<script src="js/Preloader.js"></script>
+	<script src="js/MainMenu.js"></script>
+	<script src="js/Game.js"></script>
+	<!-- main.js must come last since it references the other ones. -->
+	<script src="js/main.js"></script>
+
+<style>
+body
+{
+    color: #777;
+    font-family: "Avenir", Verdana, sans-serif;
+}
+#readme
+{
+    margin-top: 10px;
+}
+</style>
+
+</head>
+<body>
+<div id="game"></div>
+<div id="readme">
+<h2>Why did the Chicken Cross the Road???</h2>
+
+<ul>
+<li><strong>Originality:</strong>
+What is original about your game?
+<li>I tried to make frogger but with a chicken trying to cross the road instead.</li>
+</li>
+
+<li><strong>Technical Merit:</strong>
+What is interesting about your game technology?
+<li>I tried to experiment with Phaser Groups to make the roads and to make the cars. 
+	Each car spawns with a different random speed for difficulty.</li>
+</li>
+
+<li><strong>Prototype Postmortem:</strong>
+What did you learn from this prototype?
+What was the easiest or hardest part of making it?
+<li>The hardest part was figuring out how groups work with making repeating images.
+	 It was hard to get it exactly right, even with the example I found talking about it. 
+	It was also difficult to get the collision working for the cars (it still doesn't work) because it seems that
+	group collisions use different physics, while the chicken uses arcade physics. </li>
+</li>
+
+<li><strong>Prototype Assets:</strong>
+Did you make your prototype assets from scratch? Did you borrow them? Cite your sources here.
+<ul>
+<li>Loading screen: from the gamestate sample</li>
+<li>Puppy image: from the gamestate sample</li>
+<li>Button: Phaser example <a href="https://phaser.io/examples/v2/buttons/action-on-click">Action On Click</a></li>
+<li>Chicken image: <a href="http://piq.codeus.net/static/media/userpics/piq_331391_400x400.png">Chicken image</a></li>
+<li>Road image: <a href="https://ak0.picdn.net/shutterstock/videos/23424070/thumb/1.jpg">Road image</a></li>
+<li>Car image: <a href="http://carpng.com/wp-content/uploads/full/red-pixel-car-top-view-7101-0.png">Car image</a></li>
+<li>Music: "Poppers and Prosecco" Kevin MacLeod (<a href="incompetech.com">incompetech.com</a>). Licensed under <a href="http://creativecommons.org/licenses/by/3.0/">Creative Commons: By Attribution 3.0 License</a></li>
+</ul>
+</li>
+
+<li><strong>Prototype Closest Other Game:</strong>
+Which other game most closely resembles your game? If you are borrowing code from a Phaser Example, you must say so here. If you borrow code from elsewhere, you must say so here.
+<ul>
+<li>The game that this is closest to is Frogger, where a frog hops across incoming traffic to
+	 get to the other side. I borrowed the majority of <a href="https://phaser.io/examples/v2/time/custom-timer"> this code for making the timer for the cars.</a>
+	 I also used <a href="http://phaser.io/examples/v2/groups/align-sprites-to-grid">this example</a> for making the roads.  </li>
+</ul>
+</li>
+
+<li><strong>High Concept:</strong>
+A nervous chicken tries to cross the road. Why? You'll have to play to find out. 
+</li>
+
+<li><strong>Theme:</strong>
+State which of the Storymatic themes you used.
+</li>
+
+<li><strong>Mandated Variety:</strong>
+I used the chicken theme. 
+</li>
+
+<li><strong>Prototype Goal:</strong>
+Grouped objects with a little bit of randomness. Running and dodging mechanics. 
+</li>
+
+<li><strong>Player Experience Goals:</strong>
+What experience do you want players to have when playing your game?
+</li>
+
+<li><strong>Gameplay:</strong>
+The player can move forward, and left and right with arrow keys. The player needs to dodge the incoming cars in order to get to the other side. Although, the cars right now do not kill the chicken when they hit him and when he get's to the other side nothing happens. 
+With each street the chicken crosses, there was supposed to be a score UI that would increase with each road and when he reaches the top, it resets the level but the cars would come faster and more often. 
+</li>
+
+<li><strong>Strategies:</strong>
+Watch the cars and be careful with the timing.
+</li>
+
+<li><strong>Story/Setting/Premise:</strong>
+The chicken needs to cross the road. Why does he need to cross the road? We just don't know. What is at the end of this series of roads that he needs to cross? 
+</li>
+
+<li><strong>Target Audience:</strong>
+E for everyone
+</li>
+
+<li><strong>Play Time:</strong>
+1 minute
+</li>
+
+</ul>
+</div>
+</body>
+</html>
