@@ -74,9 +74,8 @@ function fire() {
             //loop calls the method that spawns the stars
             game.time.events.loop(Phaser.Timer.SECOND, fire, this);
 
-
+            //text UI
             game.add.text(600, 16, 'Left / Right to move', { font: '18px Arial', fill: '#ffffff' });
-            
             scoreText = game.add.text(16, 16, 'Score: ' + score, { font: '18px Arial', fill: '#ffffff'});
             lifeText = game.add.text(game.world.centerX, 16, 'Lives: ' + lives, { font: '18px Arial', fill: '#ffffff'});
            
