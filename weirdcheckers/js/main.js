@@ -18,7 +18,7 @@ window.onload = function() {
         type: Phaser.CANVAS,
         width: gameOptions.tileSize * 4,
         height: gameOptions.tileSize * 4,
-		backgroundColor: 0xecf0f1
+		backgroundColor: 0xecf0f1,
 		scene: [preloadAssets, playGame]
 	};
 	game = new Phaser.Game(gameConfig);
