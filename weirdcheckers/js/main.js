@@ -4,8 +4,8 @@ window.onload = function() {
 
 	//	Create your Phaser game and inject it into the 'game' div.
 	//	We did it in a window.onload event, but you can do it anywhere (requireJS load, anonymous function, jQuery dom ready, - whatever floats your boat)
-	var game = new Phaser.Game( 800, 600, Phaser.AUTO, 'game' );
-
+	var game = new Phaser.Game(480,800,Phaser.AUTO,'blocks-game',{preload:preload, create:create});
+    
 	var ROW = 0;
 	var COL = 1;
 	var gameConfig = {
