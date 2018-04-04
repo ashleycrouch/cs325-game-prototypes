@@ -22,19 +22,9 @@ GameStates.makePreloader = function( game ) {
             game.load.setPreloadSprite(preloadBar);
     
             //	Here we load the rest of the assets our game needs.
-            //	As this is just a Project Template I've not provided these assets, swap them for your own.
-            //game.load.image('titlePage', 'assets/menuscreen.png');
-            //game.load.atlas('playButton', 'assets/play_button.png', 'assets/play_button.json');
-            //game.load.audio('titleMusic', ['assets/TwinkleTwinkleLittleStar.mp3']);
-            //	+ lots of other required assets here
-           // game.load.image( 'logo', 'assets/phaser.png' );
-
-            // game.load.image('basket', 'assets/starbasket.png');
-            // game.load.spritesheet('stars', 'assets/stars.png', 73, 70);
-            // game.load.image('background', 'assets/background.png');
-
             game.load.image('board', 'assets/checkerboard.png');
             game.load.image('piece', 'assets/checkerpiece.png');
+            this.load.bitmapFont("font", "assets/fonts/font.png", "assets/fonts/font.fnt");
         },
     
         create: function () {
@@ -58,7 +48,8 @@ GameStates.makePreloader = function( game ) {
             if (/*game.cache.isSoundDecoded('titleMusic') && */ready == false)
             {
                 ready = true;
-                game.state.start('MainMenu');
+                game.state.start('Game');
+                //game.state.start('MainMenu');
             }
     
         }
