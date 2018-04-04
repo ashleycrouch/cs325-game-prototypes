@@ -1,6 +1,12 @@
 "use strict";
 
 var GameStates = {};
+// var game;
+// var gameOptions = {
+//     tileSize: 100,
+//     tweenSpeed: 50,
+//     localStorageName: "highscore"
+// }
 
 GameStates.makeBoot = function( game ) {
     return {
