@@ -6,11 +6,14 @@ window.onload = function() {
 	//	We did it in a window.onload event, but you can do it anywhere (requireJS load, anonymous function, jQuery dom ready, - whatever floats your boat)
 	var game = new Phaser.Game( 800, 600, Phaser.AUTO, 'game' );
 
-	//	Add the States your game has.
-	//	You don't have to do this in the html, it could be done in your Boot state too, but for simplicity I'll keep it here.
-	
-	// An object for shared variables, so that them main menu can show
-	// the high score if you want.
+	var ROW = 0;
+	var COL = 1;
+	var gameConfig = {
+        type: Phaser.CANVAS,
+        width: gameOptions.tileSize * 4,
+        height: (gameOptions.tileSize * 4),
+        backgroundColor: 0xecf0f1
+    }
 	var shared = {};
 	
 	game.state.add( 'Boot', GameStates.makeBoot( game ) );
@@ -21,4 +24,11 @@ window.onload = function() {
 	//	Now start the Boot state.
 	game.state.start('Boot');
 
-};
+}
+
+var gameOptions = {
+    tileSize: 200,
+    tweenSpeed: 50,
+    localStorageName: "highscore"
+}
+
