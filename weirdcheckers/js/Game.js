@@ -8,17 +8,6 @@ GameStates.makeGame = function( game, shared ) {
 
     //	Create your Phaser game and inject it into the 'game' div.
 	//	We did it in a window.onload event, but you can do it anywhere (requireJS load, anonymous function, jQuery dom ready, - whatever floats your boat)
-	//game = new Phaser.Game(800, 800, Phaser.AUTO, 'game'/*, {preload:preload, create:create}*/);
-    
-	// var gameConfig = {
-    //     type: Phaser.CANVAS,
-    //     width: gameOptions.tileSize * 8,
-    //     height: gameOptions.tileSize * 8,
-	// 	backgroundColor: 0xecf0f1
-	// 	//scene: [preloadAssets, playGame]
-	// };
-	// game = new Phaser.Game(gameConfig);
-    window.focus()
     
     function quitGame() {
 
