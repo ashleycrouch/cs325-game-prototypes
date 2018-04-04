@@ -34,20 +34,25 @@ var preloadAssets = new Phaser.Class({
         Phaser.Scene.call(this, {key: "PreloadAssets"});
     },
     preload: function(){
-        this.load.image("spot", "assets/sprites/spot.png");
-        this.load.image("gametitle", "assets/sprites/gametitle.png");
-        this.load.image("restart", "assets/sprites/restart.png");
-        this.load.image("scorepanel", "assets/sprites/scorepanel.png");
-        this.load.image("scorelabels", "assets/sprites/scorelabels.png");
-        this.load.image("logo", "assets/sprites/logo.png");
-        this.load.image("howtoplay", "assets/sprites/howtoplay.png");
-        this.load.spritesheet("tiles", "assets/sprites/tiles.png", {
-            frameWidth: gameOptions.tileSize,
-            frameHeight: gameOptions.tileSize
-        });
+
+		this.load.image("board", "assets/checkerboard.png");
+		this.load.image("piece", "assets/checkerpiece.png");
+
+
+        // this.load.image("spot", "assets/sprites/spot.png");
+        // this.load.image("gametitle", "assets/sprites/gametitle.png");
+        // this.load.image("restart", "assets/sprites/restart.png");
+        // this.load.image("scorepanel", "assets/sprites/scorepanel.png");
+        // this.load.image("scorelabels", "assets/sprites/scorelabels.png");
+        // this.load.image("logo", "assets/sprites/logo.png");
+        // this.load.image("howtoplay", "assets/sprites/howtoplay.png");
+        // this.load.spritesheet("tiles", "assets/sprites/tiles.png", {
+        //     frameWidth: gameOptions.tileSize,
+        //     frameHeight: gameOptions.tileSize
+        // });
         this.load.bitmapFont("font", "assets/fonts/font.png", "assets/fonts/font.fnt");
-        this.load.audio("move", ["assets/sounds/move.ogg", "assets/sounds/move.mp3"]);
-        this.load.audio("grow", ["assets/sounds/grow.ogg", "assets/sounds/grow.mp3"]);
+        // this.load.audio("move", ["assets/sounds/move.ogg", "assets/sounds/move.mp3"]);
+        // this.load.audio("grow", ["assets/sounds/grow.ogg", "assets/sounds/grow.mp3"]);
     },
     create: function(){
         this.scene.start("PlayGame");
