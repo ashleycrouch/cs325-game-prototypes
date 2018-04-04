@@ -55,6 +55,8 @@ var playGame = new Phaser.Class({
         Phaser.Scene.call(this, {key: "PlayGame"});
     },
     create: function(){
+
+        let background = game.add.sprite(0, 0, 'board');
         this.fieldArray = [];
         this.fieldGroup = this.add.group();
         this.score = 0;
