@@ -4,7 +4,7 @@ var COL = 1;
 
 var pieces = [];
 var pieceGroup;
-var tiles = [];
+//var tiles = [];
 
 let tileSize = 100;
 
@@ -22,6 +22,11 @@ var gameBoard = [
 
 GameStates.makeGame = function( game, shared ) 
 {
+    var currChecker = null;
+    var selectedCheckerStartPos;
+    var tempShiftedChecker = null;
+    var allowInput;
+
     function quitGame() {
 
         //  Here you should destroy anything you no longer need.
@@ -37,35 +42,26 @@ GameStates.makeGame = function( game, shared )
         return Math.sqrt(Math.pow((x1-x2),2)+Math.pow((y1-y2),2));
     }
 
-    function Piece (value, xpos, ypos)
+    function jumpChecker()
     {
-        //point value of the piece
-        this.value = value;
-        //positions on gameBoard array in format row, column
-        this.xpos = xpos;
-        this.ypos = ypos;
-        this.move = function (tile)
-        {
-            //move the piece to an appropriate spot
-        }
+        //adds the point value to the
+    }
 
-        //tests if piece can jump anywhere
-        this.canJumpAny = function () 
+    function selectChecker(piece)
+    {
+        if(allowInput)
         {
-            if(this.canOpponentJump([this.position[0]+2, this.position[1]+2]) ||
-            this.canOpponentJump([this.position[0]+2, this.position[1]-2]) ||
-            this.canOpponentJump([this.position[0]-2, this.position[1]+2]) ||
-            this.canOpponentJump([this.position[0]-2, this.position[1]-2])) 
-            {
-                return true;
-            } 
-            return false;
+            currChecker = piece;
+            selectedCheckerStartPos.x = piece.posX;
+            selectedCheckerStartPos.y = piece.posY;
         }
     }
 
-    function pickUpChecker()
+    function moveChecker(piece, posX, posY)
     {
-
+        piece.posX = posX;
+        piece.posY = posY;
+        
     }
 
     function addStartingPieces()
@@ -85,8 +81,10 @@ GameStates.makeGame = function( game, shared )
                     let label_score = game.add.text(20, 20, "1", style);
                     piece.addChild(label_score);
 
-                    //game.input.onDown.add(click, this);
-                    //game.input.onUp.add(release, this);
+                    piece.inputEnabled = true;
+                    piece.input.enableDrag();
+                    //the snap is set to every 100x100 pixels
+                    piece.input.enableSnap(100, 100, true, true);
                 }
             }
         }
@@ -100,15 +98,6 @@ GameStates.makeGame = function( game, shared )
         }
         return false;
     }
-
-    // function spaceAvailable(position)
-    // {
-    //     if(gameBoard[position[0]][position[1]] > 0)
-    //     {
-    //         return false;
-    //     }
-    //     return true;
-    // }
 
     function addPiece()
     {
@@ -124,8 +113,6 @@ GameStates.makeGame = function( game, shared )
             let label_score = game.add.text(20, 20, "1", style);
             piece.addChild(label_score);
 
-            //game.input.onDown.add(click, this);
-            //game.input.onUp.add(release, this);
         }
     }
     function addPieces(numOfPieces)
@@ -153,6 +140,32 @@ GameStates.makeGame = function( game, shared )
         return[xBoard*tileSize, yBoard*tileSize];
     }
 
+    function releaseChecker()
+    {
+        if (tempShiftedChecker === null)
+        {
+            currChecker = null;
+        }
+
+        //when the mouse is released with a checker selected
+        //1) check for other checker
+        //2) remove checker
+        //3) update point value
+        //4) add new checker piece
+
+        var canKill = checkAndKillGemMatches(currChecker);
+        canKill = checkAndKillGemMatches(tempShiftedChecker) || canKill;
+
+        if(!canKill)
+        {
+            var gem = currChecker;
+            if(gem.posX !== selectedCheckerStartPos.x || gem.posY !== selectedCheckerStartPos.y)
+            {
+                
+            }
+        }
+    }
+
     return {
 
         create: function () {
@@ -162,6 +175,13 @@ GameStates.makeGame = function( game, shared )
             game.input.mouse.capture = true;
             //game.input.mousePointer.x/.y
             addStartingPieces();
+            
+            
+            //new code
+            selectedCheckerStartPos = {x: 0, y: 0};
+            //used to disable input while gems are dropping down and respawning
+            allowInput = false;
+            game.input.addMoveCallback(moveChecker, this);
         },
 
         update: function () {
