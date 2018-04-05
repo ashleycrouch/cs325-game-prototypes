@@ -61,7 +61,21 @@ GameStates.makeGame = function( game, shared )
     {
         piece.posX = posX;
         piece.posY = posY;
-        
+    }
+
+    function canPieceJump(piece)
+    {
+        let pieceX = convertCoordinatesToBoard(piece.posX, piece.posY)[0];
+        let pieceY = convertCoordinatesToBoard(piece.posX, piece.posY)[1];
+
+        let pieceVal = gameBoard[pieceX][pieceY];
+        if((gameBoard[pieceX+1][pieceY+1] <= pieceVal && gameBoard[pieceX+2][pieceY+2] == 0)
+            || (gameBoard[pieceX+1][pieceY-1] <= pieceVal && gameBoard[pieceX+2][pieceY-2] == 0) 
+            || (gameBoard[pieceX-1][pieceY+1] <= pieceVal && gameBoard[pieceX-2][pieceY+2] == 0)
+            || (gameBoard[pieceX-1][pieceY-1] <= pieceVal && gameBoard[pieceX-2][pieceY-2] == 0))
+        {
+            return true;
+        }
     }
 
     function addStartingPieces()
@@ -115,6 +129,7 @@ GameStates.makeGame = function( game, shared )
 
         }
     }
+
     function addPieces(numOfPieces)
     {
         //randomly adds a piece to the board
@@ -153,8 +168,8 @@ GameStates.makeGame = function( game, shared )
         //3) update point value
         //4) add new checker piece
 
-        var canKill = checkAndKillGemMatches(currChecker);
-        canKill = checkAndKillGemMatches(tempShiftedChecker) || canKill;
+        var canKill = checkAndKillJumpedPiece(currChecker);
+        canKill = checkAndKillJumpedPiece(tempShiftedChecker) || canKill;
 
         if(!canKill)
         {
@@ -164,6 +179,16 @@ GameStates.makeGame = function( game, shared )
                 
             }
         }
+    }
+
+    function checkAndKillJumpedPiece(piece)
+    {
+        if(piece === null)
+        {
+            return;
+        }
+        var canKill = false;
+
     }
 
     return {
