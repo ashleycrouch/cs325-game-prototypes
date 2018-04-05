@@ -1,6 +1,4 @@
 "use strict";
-
-
 var ROW = 0;
 var COL = 1;
 
@@ -22,11 +20,8 @@ var gameBoard = [
     [  0,  0,  0,  0,  0,  0,  0,  0 ]
   ];
 
-GameStates.makeGame = function( game, shared ) {
-
-    //	Create your Phaser game and inject it into the 'game' div.
-	//	We did it in a window.onload event, but you can do it anywhere (requireJS load, anonymous function, jQuery dom ready, - whatever floats your boat)
-    
+GameStates.makeGame = function( game, shared ) 
+{
     function quitGame() {
 
         //  Here you should destroy anything you no longer need.
@@ -34,7 +29,6 @@ GameStates.makeGame = function( game, shared ) {
 
         //  Then let's go back to the main menu.
         game.state.start('MainMenu');
-
     }
 
     //distance formula
@@ -92,13 +86,7 @@ GameStates.makeGame = function( game, shared ) {
     {
         if(gameBoard[x][y] > 0)
         {
-            if(x != 0 && x != 7)
-            {
-                if(y != 0 && y != 7)
-                {
-                    return false;
-                }
-            }
+            return false;
         }
         return true;
     }
@@ -117,17 +105,20 @@ GameStates.makeGame = function( game, shared ) {
         var i;
         for(i = 0; i < numOfPieces; i++)
         {
-            let x = game.rnd.between(0, 7);
-            let y = game.rnd.between(0, 7);
-            while(!spaceAvailable(x, y))
+            let x = game.rnd.between(0, 3);
+            let y = game.rnd.between(0, 3);
+            while(!spaceAvailable((x+1)*2, (y+1)*2))
             {
-                x = game.rnd.between(0, 7);
-                y = game.rnd.between(0, 7);
+                x = game.rnd.between(0, 3);
+                y = game.rnd.between(0, 3);
             }
-            let realCoords = convertCoordinatesToReal(x, y);
+            let realCoords = convertCoordinatesToReal((x+1)*2, (y+1)*2);
+            gameBoard[(x+1)*2][(y+1)*2] = 1;
             let piece = pieceGroup.create(realCoords[0], realCoords[1], 'piece', 0); 
-            //piece.input.useHandCursor = true;
-            //piece.events.onInputDown.add(pickUpChecker, this);
+            //piece.anchor.setTo(0.5, 1);
+            piece.inputEnabled = true;
+            piece.input.useHandCursor = true;
+           // piece.events.onInputDown.add(pickUpChecker, this);
         }
         //randomly adds a piece to the board
         //figure out the spawning points for more pieces
@@ -156,7 +147,6 @@ GameStates.makeGame = function( game, shared ) {
             //piece = game.add.sprite(0, 0, 'piece');
             game.input.mouse.capture = true;
             //game.input.mousePointer.x/.y
-
             addStartingPieces();
         },
 
@@ -164,39 +154,8 @@ GameStates.makeGame = function( game, shared ) {
             //  Honestly, just about anything could go here. It's YOUR game after all. Eat your heart out!
             // piece.x = game.input.mousePointer.x;
             // piece.y = game.input.mousePointer.y;
-            
     
         }
     }
-
-    //     },
-
-    //     addChecker: function(){
-    //         var emptyTiles = [];
-    //         for(var i = 0; i < 4; i++){
-    //             for(var j = 0; j < 4; j++){
-    //                 if(this.fieldArray[i][j].tileValue == 0){
-    //                     emptyTiles.push({
-    //                         row: i,
-    //                         col: j
-    //                     })
-    //                 }
-    //             }
-    //         }
-    //         if(emptyTiles.length > 0){
-    //             var chosenTile = Phaser.Utils.Array.GetRandomElement(emptyTiles);
-    //             this.fieldArray[chosenTile.row][chosenTile.col].tileValue = 1;
-    //             this.fieldArray[chosenTile.row][chosenTile.col].tileSprite.visible = true;
-    //             this.fieldArray[chosenTile.row][chosenTile.col].tileSprite.setFrame(0);
-    //             this.tweens.add({
-    //                 targets: [this.fieldArray[chosenTile.row][chosenTile.col].tileSprite],
-    //                 alpha: 1,
-    //                 duration: gameOptions.tweenSpeed,
-    //                 onComplete: function(tween){
-    //                     tween.parent.scene.canMove = true;
-    //                 },
-    //             });
-    //         }
-    //     },
-    };
+};
 
