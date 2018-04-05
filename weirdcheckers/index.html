@@ -58,7 +58,7 @@ Did you make your prototype assets from scratch? Did you borrow them? Cite your 
 <li><strong>Prototype Closest Other Game:</strong>
 Which other game most closely resembles your game? If you are borrowing code from a Phaser Example, you must say so here. If you borrow code from elsewhere, you must say so here.
 <ul>
-<li>This game closely resembles my analog assignment, Weird Checkers.</li>
+<li>This game closely resembles my analog assignment, <a href="https://docs.google.com/document/d/1uZaHJVYFGO2OFldzS5EI9TnAp4bs_-CHlimJDad71ww/edit?usp=sharing">Weird Checkers</a>.</li>
 </ul>
 </li>
 
@@ -83,16 +83,18 @@ This game is supposed to be a quick game that you can play when you’re bored a
 </li>
 
 <li><strong>Gameplay:</strong>
-A paragraph describing the actions the player can perform, the system dynamics, and the core mechanic. Include a concise explanation of the prototype’s inputs and their expected effects (how to play). You can also describe game play that is not in the prototype. You may include mock-up images for parts of the game not in the prototype.
+The player can move any of the pieces on the board in a diagonal direction, only moving onto black squares. they can only move when they are able to jump over a piece with equal or lesser point value to an empty space.
+When the player jumps over a piece, the point value times the combo multiplier of the piece is added to the jumping piece. After each turn, a new piece is added randomly to the board. If the player is able to jump over another piece after moving, they may jump the piece and add 1 to the combo multiplier. The combo multiplier is reset to 1 each turn.
+ If the player is unable to move any of the pieces at the start of their turn, then the game is over. The goal is to get the highest point value piece they can.
+ The playing capabilities aren't 100% in yet, as Phaser is confusing. I was able to set up the system for the checkerboard and pieces, but not for jumping and player input.
 </li>
 
 <li><strong>Strategies:</strong>
-There are  a few strategies players can try. One is to stack everything into one checker, but the best method seems to be spreading it out and not jumping at every chance you have to do double or triple points. New checkers only spawn one at a time, so going after every point value is sometimes not the best. Try to strategize a bit.
+There are a few strategies players can try. One is to stack everything into one checker, but the best method seems to be spreading it out and not jumping at every chance you have to do double or triple points. New checkers only spawn one at a time, so going after every point value is sometimes not the best. Try to strategize a bit.
 </li>
 
 <li><strong>Story/Setting/Premise:</strong>
-A paragraph about the world your game is set in and who the characters are. What makes the game world and its occupants unique and interesting? Do the tokens represent something? If the game has a backstory, mention it here. If the game is abstract, then say so.
-How will the dramatic tension interact with the gameplay tension?
+There are no characters or story explicitely said. 
 </li>
 
 <li><strong>Target Audience:</strong>
@@ -100,7 +102,7 @@ A single sentence that describes the demographic you're trying to reach.
 </li>
 
 <li><strong>Play Time:</strong>
-How long does your game take to play?
+A few minutes.
 </li>
 
 </ul>

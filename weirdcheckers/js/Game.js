@@ -10,14 +10,14 @@ let tileSize = 100;
 
 //The initial setup
 var gameBoard = [ 
-    [  0,  0,  0,  0,  0,  0,  0,  0 ],
-    [  0,  0,  0,  0,  0,  0,  0,  0 ],
-    [  0,  0,  0,  1,  0,  1,  0,  0 ],
-    [  0,  0,  1,  0,  1,  0,  0,  0 ],
-    [  0,  0,  0,  1,  0,  1,  0,  0 ],
-    [  0,  0,  1,  0,  1,  0,  0,  0 ],
-    [  0,  0,  0,  0,  0,  0,  0,  0 ],
-    [  0,  0,  0,  0,  0,  0,  0,  0 ]
+    [ -1,  0,  -1,  0,  -1,  0,  -1, 0 ],
+    [ 0,  -1,  0,  -1,  0,  -1,  0, -1 ],
+    [ -1,  0, -1,  1,  -1,  1,  -1,  0 ],
+    [ 0,  -1,  1,  -1,  1,  -1,  0, -1 ],
+    [ -1,  0,  -1,  1,  -1,  1,  -1, 0 ],
+    [ 0,  -1,  1,  -1,  1,  -1,  0, -1 ],
+    [ -1,  0,  -1,  0,  -1,  0,  -1, 0 ],
+    [ 0,  -1,  0,  -1,  0,  -1,  0, -1 ]
   ];
 
 GameStates.makeGame = function( game, shared ) 
@@ -63,6 +63,11 @@ GameStates.makeGame = function( game, shared )
         }
     }
 
+    function pickUpChecker()
+    {
+
+    }
+
     function addStartingPieces()
     {
         //adds the pieces for the start of the game and starts the player's turn
@@ -76,10 +81,12 @@ GameStates.makeGame = function( game, shared )
                 {
                     let realCoords = convertCoordinatesToReal(x, y);
                     let piece = pieceGroup.create(realCoords[0], realCoords[1], 'piece', 0);
-                    let newPiece = Piece(1, x, y)
-                    var style = {font: "32px Arial", fill: "#ff0044", wordWrap: true, wordWrapWidth: sprite.width, align: "center"};
-                    let text = game.add.text(0, 0, newPiece.value, style);
-                   // piece.input.useHandCursor = true;
+                    let style = { font: "30px Arial", fill: "#ffffff", align: "center" };  
+                    let label_score = game.add.text(20, 20, "1", style);
+                    piece.addChild(label_score);
+
+                    //game.input.onDown.add(click, this);
+                    //game.input.onUp.add(release, this);
                 }
             }
         }
@@ -87,11 +94,11 @@ GameStates.makeGame = function( game, shared )
 
     function spaceAvailable(x, y)
     {
-        if(gameBoard[x][y] > 0)
+        if(gameBoard[x][y] == 0)
         {
-            return false;
+            return true;
         }
-        return true;
+        return false;
     }
 
     // function spaceAvailable(position)
@@ -103,28 +110,33 @@ GameStates.makeGame = function( game, shared )
     //     return true;
     // }
 
+    function addPiece()
+    {
+        let x = game.rnd.between(0, 7);
+        let y = game.rnd.between(0, 7);
+        if(spaceAvailable(x, y))
+        {
+            gameBoard[x][y] = 1;
+            let realCoords = convertCoordinatesToReal(x, y);
+            let piece = pieceGroup.create(realCoords[0], realCoords[1], 'piece', 0); 
+
+            let style = { font: "30px Arial", fill: "#ffffff", align: "center" };  
+            let label_score = game.add.text(20, 20, "1", style);
+            piece.addChild(label_score);
+
+            //game.input.onDown.add(click, this);
+            //game.input.onUp.add(release, this);
+        }
+    }
     function addPieces(numOfPieces)
     {
+        //randomly adds a piece to the board
+        //figure out the spawning points for more pieces
         var i;
         for(i = 0; i < numOfPieces; i++)
         {
-            let x = game.rnd.between(0, 3);
-            let y = game.rnd.between(0, 3);
-            while(!spaceAvailable((x+1)*2, (y+1)*2))
-            {
-                x = game.rnd.between(0, 3);
-                y = game.rnd.between(0, 3);
-            }
-            let realCoords = convertCoordinatesToReal((x+1)*2, (y+1)*2);
-            gameBoard[(x+1)*2][(y+1)*2] = 1;
-            let piece = pieceGroup.create(realCoords[0], realCoords[1], 'piece', 0); 
-            //piece.anchor.setTo(0.5, 1);
-            piece.inputEnabled = true;
-            piece.input.useHandCursor = true;
-           // piece.events.onInputDown.add(pickUpChecker, this);
+            addPiece();
         }
-        //randomly adds a piece to the board
-        //figure out the spawning points for more pieces
     }
 
     function convertCoordinatesToBoard(xReal, yReal)
