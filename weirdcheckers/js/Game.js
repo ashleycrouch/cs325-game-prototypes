@@ -37,13 +37,13 @@ GameStates.makeGame = function( game, shared )
         return Math.sqrt(Math.pow((x1-x2),2)+Math.pow((y1-y2),2));
     }
 
-    function Piece (value, position)
+    function Piece (value, xpos, ypos)
     {
         //point value of the piece
         this.value = value;
         //positions on gameBoard array in format row, column
-        this.position = position;
-    
+        this.xpos = xpos;
+        this.ypos = ypos;
         this.move = function (tile)
         {
             //move the piece to an appropriate spot
@@ -75,7 +75,10 @@ GameStates.makeGame = function( game, shared )
                 if(gameBoard[x][y] == 1)
                 {
                     let realCoords = convertCoordinatesToReal(x, y);
-                    let piece = pieceGroup.create(realCoords[0], realCoords[1], 'piece', 0); 
+                    let piece = pieceGroup.create(realCoords[0], realCoords[1], 'piece', 0);
+                    let newPiece = Piece(1, x, y)
+                    var style = {font: "32px Arial", fill: "#ff0044", wordWrap: true, wordWrapWidth: sprite.width, align: "center"};
+                    let text = game.add.text(0, 0, newPiece.value, style);
                    // piece.input.useHandCursor = true;
                 }
             }
@@ -122,7 +125,6 @@ GameStates.makeGame = function( game, shared )
         }
         //randomly adds a piece to the board
         //figure out the spawning points for more pieces
-        //let piece = pieceGroup.create(game.world.centerX, 75, 'piece', starNum);
     }
 
     function convertCoordinatesToBoard(xReal, yReal)
