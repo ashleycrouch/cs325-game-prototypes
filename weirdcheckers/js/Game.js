@@ -47,8 +47,9 @@ GameStates.makeGame = function( game, shared )
         //adds the point value to the
     }
 
-    function selectChecker(piece)
+    function selectChecker(piece, temp)
     {
+        console.log(temp);
         if(allowInput)
         {
             currChecker = piece;
@@ -97,6 +98,7 @@ GameStates.makeGame = function( game, shared )
 
                     piece.inputEnabled = true;
                     piece.input.enableDrag();
+                    piece.input.onDown.add(selectChecker, this, piece);
                     //the snap is set to every 100x100 pixels
                     piece.input.enableSnap(100, 100, true, true);
                 }
