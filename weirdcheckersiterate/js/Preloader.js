@@ -24,6 +24,7 @@ GameStates.makePreloader = function( game ) {
             //	Here we load the rest of the assets our game needs.
             game.load.image('board', 'assets/checkerboard.png');
             game.load.image('piece', 'assets/checkerpiece.png');
+            game.load.image('tile', 'assets/checkerboardtile.png');
             this.load.bitmapFont("font", "assets/fonts/font.png", "assets/fonts/font.fnt");
         },
     

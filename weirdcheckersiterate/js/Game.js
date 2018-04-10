@@ -6,6 +6,8 @@ var pieces = [];
 var pieceGroup;
 //var tiles = [];
 
+var tileGroup;
+
 let tileSize = 100;
 
 //The initial setup
@@ -98,9 +100,21 @@ GameStates.makeGame = function( game, shared )
 
                     piece.inputEnabled = true;
                     piece.input.enableDrag();
-                    piece.input.onDown.add(selectChecker, this, piece);
+                   // piece.input.onDown.add(selectChecker, this, piece);
                     //the snap is set to every 100x100 pixels
                     piece.input.enableSnap(100, 100, true, true);
+                }
+
+                if(gameBoard[x][y] == 0)
+                {
+                    let realCoords = convertCoordinatesToReal(x, y);
+                    let tile = tileGroup.create(realCoords[0], realCoords[1], 'tile', 0);
+
+                   // piece.inputEnabled = true;
+                   // piece.input.enableDrag();
+                   // piece.input.onDown.add(selectChecker, this, piece);
+                    //the snap is set to every 100x100 pixels
+                   // piece.input.enableSnap(100, 100, true, true);
                 }
             }
         }
@@ -197,8 +211,10 @@ GameStates.makeGame = function( game, shared )
 
         create: function () {
             let board = game.add.sprite(0, 0, 'board');
+            tileGroup = game.add.group();
             pieceGroup = game.add.group();
             //piece = game.add.sprite(0, 0, 'piece');
+            //tile = game.add.sprite(0, 0, 'tile');
             game.input.mouse.capture = true;
             //game.input.mousePointer.x/.y
             addStartingPieces();
