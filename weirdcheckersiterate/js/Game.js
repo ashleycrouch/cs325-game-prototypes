@@ -12,8 +12,8 @@ let tileSize = 100;
 var possibleMoves = []; //array of possible moves
 
 var currChecker; //the selected checker piece
-var currCheckerX; //the selected checker x board value
-var currCheckerY; //the selected checker y board value
+//var currCheckerX; //the selected checker x board value
+//var currCheckerY; //the selected checker y board value
 var currCheckerHighlight;
 var selectedPos; //tile that the player piece will move to
 
@@ -63,64 +63,104 @@ GameStates.makeGame = function(game, shared)
         deselectChecker(currCheckerHighlight);
         //console.log(piece + "coords: " + piece.world.x + ", " + piece.world.y);
         currChecker = piece;
-        currCheckerX = convertCoordinatesToBoard(piece.world.x, piece.world.y)[0];
-        currCheckerY = convertCoordinatesToBoard(piece.world.x, piece.world.y)[1];
+        //currCheckerX = convertCoordinatesToBoard(piece.world.x, piece.world.y)[0];
+        //currCheckerY = convertCoordinatesToBoard(piece.world.x, piece.world.y)[1];
         currCheckerHighlight = game.add.sprite(piece.world.x, piece.world.y, 'highlight');
         //let hl = game.add.sprite(piece.world.x, piece.world.y, 'highlight');
         //console.log(currChecker + "coords: " + currCheckerX + ", " + currCheckerY);
     }
 
-    function deselectChecker(sprite)
+    function deselectChecker(piece)
     {
         if(currCheckerHighlight)
         {
-            sprite.destroy();
-            console.log(currCheckerHighlight);
+            piece.destroy();
+            //console.log(currCheckerHighlight);
             //currCheckerHighlight.body = null;
             currCheckerHighlight = null;
             currChecker = null;
-            currCheckerX = null;
-            currCheckerY = null;
+           // currCheckerX = null;
+           // currCheckerY = null;
         }
-
     }
 
     function findPossibleMoves(piece)
     {
-        pieceX = convertCoordinatesToBoard(piece.world.x, piece.world.y)[0];
-        pieceY = convertCoordinatesToBoard(piece.world.x, piece.world.y)[1];
+        let possibleMoves = [];
+        if(canPieceJump(piece))
+        {
+            if(gameBoard[piece.xBoard+1][piece.yBoard+1] <= piece.pieceVal 
+                && gameBoard[piece.xBoard+2][piece.yBoard+2] == 0)
+            {
+                possibleMoves.push(gameBoard[piece.xBoard+2][piece.yBoard+2]);
+            }
 
+            if(gameBoard[piece.xBoard-1][piece.yBoard+1] <= piece.pieceVal 
+                && gameBoard[piece.xBoard-2][piece.yBoard+2] == 0)
+            {
+                possibleMoves.push(gameBoard[piece.xBoard-2][piece.yBoard+2]);
+            }
+
+            if(gameBoard[piece.xBoard+1][piece.yBoard-1] <= piece.pieceVal 
+                && gameBoard[piece.xBoard+2][piece.yBoard-2] == 0)
+            {
+                possibleMoves.push(gameBoard[piece.xBoard+2][piece.yBoard-2]);
+            }
+
+            if(gameBoard[piece.xBoard-1][piece.yBoard-1] <= piece.pieceVal 
+                && gameBoard[piece.xBoard-2][piece.yBoard-2] == 0)
+            {
+                possibleMoves.push(gameBoard[piece.xBoard-2][piece.yBoard-2]);
+            }
+        }
+        else
+        {
+            return possibleMoves;
+        }
         //return an array of places it can jump to
         //needs to have a piece between it and empty tile
     }
 
-    //takes in board position, maybe change to take in a tile?
-    function moveChecker(posX, posY)
+    //moves selected checker to a tile
+    function moveChecker(tile)
     {
        // let pieceX = convertCoordinatesToBoard(piece.posX, piece.posY)[0];
        // let pieceY = convertCoordinatesToBoard(piece.posX, piece.posY)[1];
-        gameBoard[currCheckerX][currCheckerY] = 0;
 
-        let newX = convertCoordinatesToReal(posX, posY)[0];
-        let newY = convertCoordinatesToReal(posX, posY)[1];
-
-        currChecker.posX = newX;
-        currChecker.posY = newY;
-
-        gameBoard[posX][posY] = piece.pieceVal;
-
+        if(currChecker == null)
+        {
+            console.log("Select a piece!");
+        }
+        else
+        {
+            console.log(currChecker);
+            gameBoard[currChecker.xBoard][currChecker.yBoard] = 0;
+    
+            // let newX = convertCoordinatesToReal(posX, posY)[0];
+            // let newY = convertCoordinatesToReal(posX, posY)[1];
+            gameBoard[tile.xBoard][tile.yBoard] = currChecker.pieceVal;
+            game.physics.arcade.moveToObject(currChecker, tile, 3);
+            currChecker.world.x = tile.world.x;
+            currChecker.world.y = tile.world.y;
+    
+            //gameBoard[posX][posY] = piece.pieceVal;
+        }
     }
 
     function canPieceJump(piece)
     {
-        let pieceX = convertCoordinatesToBoard(piece.posX, piece.posY)[0];
-        let pieceY = convertCoordinatesToBoard(piece.posX, piece.posY)[1];
+        // let pieceX = convertCoordinatesToBoard(piece.posX, piece.posY)[0];
+        // let pieceY = convertCoordinatesToBoard(piece.posX, piece.posY)[1];
 
-        let pieceVal = gameBoard[pieceX][pieceY];
-        if((gameBoard[pieceX+1][pieceY+1] <= pieceVal && gameBoard[pieceX+2][pieceY+2] == 0)
-            || (gameBoard[pieceX+1][pieceY-1] <= pieceVal && gameBoard[pieceX+2][pieceY-2] == 0) 
-            || (gameBoard[pieceX-1][pieceY+1] <= pieceVal && gameBoard[pieceX-2][pieceY+2] == 0)
-            || (gameBoard[pieceX-1][pieceY-1] <= pieceVal && gameBoard[pieceX-2][pieceY-2] == 0))
+        // let pieceVal = gameBoard[pieceX][pieceY];
+        let x = piece.xBoard;
+        let y = piece.yBoard;
+        let val = piece.pieceVal;
+
+        if((gameBoard[x+1][y+1] <= val && gameBoard[x+2][y+2] == 0)
+            || (gameBoard[x+1][y-1] <= val && gameBoard[x+2][y-2] == 0) 
+            || (gameBoard[x-1][y+1] <= val && gameBoard[x-2][y+2] == 0)
+            || (gameBoard[x-1][y-1] <= val && gameBoard[x-2][x-2] == 0))
         {
             return true;
         }
@@ -140,7 +180,10 @@ GameStates.makeGame = function(game, shared)
                     let realCoords = convertCoordinatesToReal(x, y);
                     let piece = pieceGroup.create(realCoords[0], realCoords[1], 'piece', 0);
                     let style = { font: "30px Arial", fill: "#ffffff", align: "center" };  
-                    let label_score = game.add.text(20, 20, "1", style);
+                    piece.pieceVal = 1;
+                    piece.xBoard = x;
+                    piece.yBoard = y;
+                    let label_score = game.add.text(20, 20, String(piece.pieceVal), style);
                     piece.addChild(label_score);
 
                     piece.inputEnabled = true;
@@ -157,8 +200,11 @@ GameStates.makeGame = function(game, shared)
                 {
                     let realCoords = convertCoordinatesToReal(x, y);
                     let tile = tileGroup.create(realCoords[0], realCoords[1], 'tile', 0);
+                    tile.xBoard = x;
+                    tile.yBoard = y;
 
-                    tile.inputEnabled = false;
+                    tile.inputEnabled = true;
+                    tile.events.onInputDown.add(moveChecker, this)
                     // piece.inputEnabled = true;
                     // piece.input.enableDrag();
                     // piece.input.onDown.add(selectChecker, this, piece);
@@ -188,11 +234,12 @@ GameStates.makeGame = function(game, shared)
             gameBoard[x][y] = 1;
             let realCoords = convertCoordinatesToReal(x, y);
             let piece = pieceGroup.create(realCoords[0], realCoords[1], 'piece', 0); 
-
+            piece.pieceVal = 1;
+            piece.xBoard = x;
+            piece.yBoard = y;
             let style = { font: "30px Arial", fill: "#ffffff", align: "center" };  
-            let label_score = game.add.text(20, 20, "1", style);
+            let label_score = game.add.text(20, 20, String(piece.pieceVal), style);
             piece.addChild(label_score);
-
         }
     }
 
@@ -229,8 +276,6 @@ GameStates.makeGame = function(game, shared)
             pieceGroup = game.add.group();
             //piece = game.add.sprite(0, 0, 'piece');
             //tile = game.add.sprite(0, 0, 'tile');
-            //game.input.mouse.capture = true;
-            //game.input.mousePointer.x/.y
             addStartingPieces();
         },
 
