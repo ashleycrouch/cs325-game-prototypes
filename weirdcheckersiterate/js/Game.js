@@ -7,8 +7,13 @@ var pieceGroup;
 //var tiles = [];
 
 var tileGroup;
-
 let tileSize = 100;
+
+var possibleMoves = []; //array of possible moves
+var currChecker; //the selected checker piece
+var currCheckerX;
+var currCheckerY;
+var selectedPos; //tile that the player piece will move to
 
 //The initial setup
 var gameBoard = [ 
@@ -22,12 +27,12 @@ var gameBoard = [
     [ 0,  -1,  0,  -1,  0,  -1,  0, -1 ]
   ];
 
-GameStates.makeGame = function( game, shared ) 
+GameStates.makeGame = function(game, shared) 
 {
-    var currChecker = null;
-    var selectedCheckerStartPos;
-    var tempShiftedChecker = null;
-    var allowInput;
+    currChecker = null;
+    selectedPos = null;
+    var allowTileInput;
+    var allowPieceInput;
 
     function quitGame() {
 
@@ -46,7 +51,8 @@ GameStates.makeGame = function( game, shared )
 
     function jumpChecker()
     {
-        //adds the point value to the
+
+        //adds the point value to the jumping checker
     }
 
     function selectChecker(piece, temp)
@@ -55,15 +61,26 @@ GameStates.makeGame = function( game, shared )
         if(allowInput)
         {
             currChecker = piece;
-            selectedCheckerStartPos.x = piece.posX;
-            selectedCheckerStartPos.y = piece.posY;
+            currCheckerX = convertCoordinatesToBoard(piece.posX, piece.posY)[0];
+            currCheckerY = convertCoordinatesToBoard(piece.posX, piece.posY)[1];
         }
     }
 
-    function moveChecker(piece, posX, posY)
+    //takes in board position
+    function moveChecker(posX, posY)
     {
-        piece.posX = posX;
-        piece.posY = posY;
+       // let pieceX = convertCoordinatesToBoard(piece.posX, piece.posY)[0];
+       // let pieceY = convertCoordinatesToBoard(piece.posX, piece.posY)[1];
+        gameBoard[currCheckerX][currCheckerY] = 0;
+
+        let newX = convertCoordinatesToReal(posX, posY)[0];
+        let newY = convertCoordinatesToReal(posX, posY)[1];
+
+        currChecker.posX = newX;
+        currChecker.posY = newY;
+
+        gameBoard[posX][posY] = piece.pieceVal;
+
     }
 
     function canPieceJump(piece)
@@ -99,10 +116,10 @@ GameStates.makeGame = function( game, shared )
                     piece.addChild(label_score);
 
                     piece.inputEnabled = true;
-                    piece.input.enableDrag();
-                   // piece.input.onDown.add(selectChecker, this, piece);
+                    //piece.input.enableDrag();
+                    // piece.input.onDown.add(selectChecker, this, piece);
                     //the snap is set to every 100x100 pixels
-                    piece.input.enableSnap(100, 100, true, true);
+                    // piece.input.enableSnap(100, 100, true, true);
                 }
 
                 if(gameBoard[x][y] == 0)
@@ -110,11 +127,12 @@ GameStates.makeGame = function( game, shared )
                     let realCoords = convertCoordinatesToReal(x, y);
                     let tile = tileGroup.create(realCoords[0], realCoords[1], 'tile', 0);
 
-                   // piece.inputEnabled = true;
-                   // piece.input.enableDrag();
-                   // piece.input.onDown.add(selectChecker, this, piece);
+                    tile.inputEnabled = false;
+                    // piece.inputEnabled = true;
+                    // piece.input.enableDrag();
+                    // piece.input.onDown.add(selectChecker, this, piece);
                     //the snap is set to every 100x100 pixels
-                   // piece.input.enableSnap(100, 100, true, true);
+                    // piece.input.enableSnap(100, 100, true, true);
                 }
             }
         }
@@ -177,35 +195,8 @@ GameStates.makeGame = function( game, shared )
         {
             currChecker = null;
         }
-
-        //when the mouse is released with a checker selected
-        //1) check for other checker
-        //2) remove checker
-        //3) update point value
-        //4) add new checker piece
-
-        var canKill = checkAndKillJumpedPiece(currChecker);
-        canKill = checkAndKillJumpedPiece(tempShiftedChecker) || canKill;
-
-        if(!canKill)
-        {
-            var gem = currChecker;
-            if(gem.posX !== selectedCheckerStartPos.x || gem.posY !== selectedCheckerStartPos.y)
-            {
-                
-            }
-        }
     }
 
-    function checkAndKillJumpedPiece(piece)
-    {
-        if(piece === null)
-        {
-            return;
-        }
-        var canKill = false;
-
-    }
 
     return {
 
@@ -219,12 +210,6 @@ GameStates.makeGame = function( game, shared )
             //game.input.mousePointer.x/.y
             addStartingPieces();
             
-            
-            //new code
-            selectedCheckerStartPos = {x: 0, y: 0};
-            //used to disable input while gems are dropping down and respawning
-            allowInput = false;
-            game.input.addMoveCallback(moveChecker, this);
         },
 
         update: function () {
