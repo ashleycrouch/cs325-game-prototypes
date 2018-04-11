@@ -25,6 +25,7 @@ GameStates.makePreloader = function( game ) {
             game.load.image('board', 'assets/checkerboard.png');
             game.load.image('piece', 'assets/checkerpiece.png');
             game.load.image('tile', 'assets/checkerboardtile.png');
+            game.load.image('highlight', 'assets/highlight.png');
             this.load.bitmapFont("font", "assets/fonts/font.png", "assets/fonts/font.fnt");
         },
     
