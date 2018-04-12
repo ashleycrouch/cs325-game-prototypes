@@ -10,6 +10,7 @@ var tileGroup;
 let tileSize = 100;
 
 var possibleMoves = []; //array of possible moves
+var highlightGroup;
 
 var currChecker; //the selected checker piece
 //var currCheckerX; //the selected checker x board value
@@ -21,14 +22,14 @@ var comboVal = 1;
 
 //The initial setup
 var gameBoard = [ 
-    [ -1,  0,  -1,  0,  -1,  0,  -1, 0 ],
-    [ 0,  -1,  0,  -1,  0,  -1,  0, -1 ],
-    [ -1,  0, -1,  1,  -1,  1,  -1,  0 ],
-    [ 0,  -1,  1,  -1,  1,  -1,  0, -1 ],
-    [ -1,  0,  -1,  1,  -1,  1,  -1, 0 ],
-    [ 0,  -1,  1,  -1,  1,  -1,  0, -1 ],
-    [ -1,  0,  -1,  0,  -1,  0,  -1, 0 ],
-    [ 0,  -1,  0,  -1,  0,  -1,  0, -1 ]
+    [ -1,  0, -1,  0, -1,  0, -1, 0 ],
+    [  0, -1,  0, -1,  0, -1,  0,-1 ],
+    [ -1,  0, -1,  1, -1,  1, -1, 0 ],
+    [  0, -1,  1, -1,  1, -1,  0,-1 ],
+    [ -1,  0, -1,  1, -1,  1, -1, 0 ],
+    [  0, -1,  1, -1,  1, -1,  0,-1 ],
+    [ -1,  0, -1,  0, -1,  0, -1, 0 ],
+    [  0, -1,  0, -1,  0, -1,  0,-1 ]
   ];
 
 GameStates.makeGame = function(game, shared) 
@@ -65,9 +66,10 @@ GameStates.makeGame = function(game, shared)
         currChecker = piece;
         //currCheckerX = convertCoordinatesToBoard(piece.world.x, piece.world.y)[0];
         //currCheckerY = convertCoordinatesToBoard(piece.world.x, piece.world.y)[1];
-        currCheckerHighlight = game.add.sprite(piece.world.x, piece.world.y, 'highlight');
-        //let hl = game.add.sprite(piece.world.x, piece.world.y, 'highlight');
-        //console.log(currChecker + "coords: " + currCheckerX + ", " + currCheckerY);
+        currCheckerHighlight = highlightGroup.create(piece.world.x, piece.world.y, 'highlight', 0);
+        let moves = findPossibleMoves(piece);
+        //possibleMoves = findPossibleMoves(piece);
+        console.log(moves);
     }
 
     function deselectChecker(piece)
@@ -84,39 +86,200 @@ GameStates.makeGame = function(game, shared)
         }
     }
 
+    function checkPerimeter(piece)
+    {
+        console.log(piece);
+        let perimeterMoves = [];
+
+        if(gameBoard[piece.xBoard-1][piece.yBoard-1] != null)
+        {
+            perimeterMoves[0] = gameBoard[piece.xBoard-1][piece.yBoard-1];
+        }
+
+        if(gameBoard[piece.xBoard+1][piece.yBoard-1] != null)
+        {
+            perimeterMoves[1] = gameBoard[piece.xBoard+1][piece.yBoard-1];
+        }
+        
+        if(gameBoard[piece.xBoard-1][piece.yBoard+1] != null)
+        {
+            perimeterMoves[2] = gameBoard[piece.xBoard-1][piece.yBoard+1];
+        }
+        
+        if(gameBoard[piece.xBoard+1][piece.yBoard+1] != null)
+        {
+            perimeterMoves[3] = gameBoard[piece.xBoard+1][piece.yBoard+1];
+        }
+
+        return perimeterMoves;
+    }
+
+    function checkJump(piece, i)
+    {
+        console.log(piece.xBoard + " : " + piece. yBoard);
+        console.log(i)
+        switch(i)
+        {
+            case 0:
+            if((gameBoard[piece.xBoard-1][piece.yBoard-1]).key == "tile")
+            //if(tileGroup.children.indexOf(gameBoard[piece.xBoard-1][piece.yBoard-1]) > -1)
+            {
+                console.log("case 0")
+                return gameBoard[piece.xBoard-1][piece.yBoard-1];
+            }
+
+            case 1:
+            if((gameBoard[piece.xBoard+1][piece.yBoard-1]).key == "tile")
+            {
+                console.log("case 1")
+                return gameBoard[piece.xBoard+1][piece.yBoard-1];
+            }
+            
+            case 2:
+            if((gameBoard[piece.xBoard-1][piece.yBoard+1]).key == "tile")
+            {
+                console.log("case 2")
+                return gameBoard[piece.xBoard-1][piece.yBoard+1];
+            }
+            
+            case 3:
+            if((gameBoard[piece.xBoard+1][piece.yBoard+1]).key == "tile")
+            {
+                console.log("case 3")
+                return gameBoard[piece.xBoard+1][piece.yBoard+1];
+            }
+        }
+        return null;
+    }
+
+    //return array of tiles
     function findPossibleMoves(piece)
     {
-        let possibleMoves = [];
-        if(canPieceJump(piece))
+        possibleMoves = [];
+        let perimeter = checkPerimeter(piece);
+        console.log(perimeter);
+        if(perimeter)
         {
-            if(gameBoard[piece.xBoard+1][piece.yBoard+1] <= piece.pieceVal 
-                && gameBoard[piece.xBoard+2][piece.yBoard+2] == 0)
+            let currPerimeter;
+            for(let i = 0; i < 4; i++)
             {
-                possibleMoves.push(gameBoard[piece.xBoard+2][piece.yBoard+2]);
+                if(perimeter[i].pieceVal > 0)
+                {                     
+                    //newPerimeter.push(checkJump(perimeter[i], i));
+                    console.log(checkJump(perimeter[i], i));
+                    if(checkJump(perimeter[i], i) != null)
+                    {
+                        console.log(checkJump(perimeter[i], i));
+                        currPerimeter = checkJump(perimeter[i], i);
+                    }
+
+                    possibleMoves.push(currPerimeter);
+
+                    // if(i == 0)
+                    // {
+                    //     let newPerimeter = checkJump(perimeter[i], i);
+                    // }
+                    // if(i == 1)
+                    // {
+
+                    // }
+                    // if(i == 2)
+                    // {
+
+                    // }
+                    // if(i == 3)
+                    // {
+
+                    // }
+                }
+                else
+                {
+                    // newPerimeter[i] = null;
+                    // possibleMoves = newPerimeter;
+                }
             }
 
-            if(gameBoard[piece.xBoard-1][piece.yBoard+1] <= piece.pieceVal 
-                && gameBoard[piece.xBoard-2][piece.yBoard+2] == 0)
-            {
-                possibleMoves.push(gameBoard[piece.xBoard-2][piece.yBoard+2]);
-            }
-
-            if(gameBoard[piece.xBoard+1][piece.yBoard-1] <= piece.pieceVal 
-                && gameBoard[piece.xBoard+2][piece.yBoard-2] == 0)
-            {
-                possibleMoves.push(gameBoard[piece.xBoard+2][piece.yBoard-2]);
-            }
-
-            if(gameBoard[piece.xBoard-1][piece.yBoard-1] <= piece.pieceVal 
-                && gameBoard[piece.xBoard-2][piece.yBoard-2] == 0)
-            {
-                possibleMoves.push(gameBoard[piece.xBoard-2][piece.yBoard-2]);
-            }
         }
-        else
-        {
-            return possibleMoves;
-        }
+        
+        // perimeter.forEach(move => 
+        //     {
+            
+        //         if(move > 0)
+        //         {
+        //             let newPerimeter = checkPerimeter(move);
+        //             if
+        //         }
+        //     })
+
+        // array.forEach(element => {
+            
+        // });
+
+        //if(perimeter[i] > 0)
+
+        console.log(possibleMoves);
+
+        return possibleMoves;
+
+
+
+
+
+
+        // possibleMoves = [];
+        // if(gameBoard[piece.xBoard+1][piece.yBoard+1] != 0)
+        // {
+        //     //console.log("spot located");
+        //     if((gameBoard[piece.xBoard+1][piece.yBoard+1] <= piece.pieceVal) 
+        //         && (gameBoard[piece.xBoard+2][piece.yBoard+2] == 0))
+        //     {
+        //         let realCoords = convertCoordinatesToReal(piece.xBoard+2, piece.yBoard+2);
+        //         //let newHL = highlightGroup.create(realCoords[0], realCoords[1], 'highlight', 0);
+        //         //possibleMoves.push(realCoords);
+        //         console.log(realCoords);
+        //         possibleMoves.push(gameBoard[piece.xBoard+2][piece.yBoard+2]);
+        //     }
+        // }
+        
+        // if(gameBoard[piece.xBoard-1][piece.yBoard+1] != 0)
+        // {
+        //     if((gameBoard[piece.xBoard-1][piece.yBoard+1] <= piece.pieceVal) 
+        //         && (gameBoard[piece.xBoard-2][piece.yBoard+2] == 0))
+        //     {
+        //         let realCoords = convertCoordinatesToReal(piece.xBoard-2, piece.yBoard+2);
+        //         //let newHL = highlightGroup.create(realCoords[0], realCoords[1], 'highlight', 0);
+        //         //possibleMoves.push(realCoords);
+        //         //console.log(realCoords);
+        //         possibleMoves.push(gameBoard[piece.xBoard-2][piece.yBoard+2]);
+        //     }
+        // }
+
+        // if(gameBoard[piece.xBoard+1][piece.yBoard-1] != 0)
+        // {
+        //     if((gameBoard[piece.xBoard+1][piece.yBoard-1] <= piece.pieceVal) 
+        //         && (gameBoard[piece.xBoard+2][piece.yBoard-2] == 0))
+        //     {
+        //         let realCoords = convertCoordinatesToReal(piece.xBoard+2, piece.yBoard-2);
+        //         //let newHL = highlightGroup.create(realCoords[0], realCoords[1], 'highlight', 0);
+        //         //possibleMoves.push(realCoords);
+        //         //console.log(realCoords);
+        //         possibleMoves.push(gameBoard[piece.xBoard+2][piece.yBoard-2]);
+        //     }
+        // }
+       
+        // if(gameBoard[piece.xBoard-1][piece.yBoard-1] != 0)
+        // {
+        //     if((gameBoard[piece.xBoard-1][piece.yBoard-1] <= piece.pieceVal) 
+        //         && (gameBoard[piece.xBoard-2][piece.yBoard-2] == 0))
+        //     {
+        //         let realCoords = convertCoordinatesToReal(piece.xBoard-2, piece.yBoard-2);
+        //         //let newHL = highlightGroup.create(realCoords[0], realCoords[1], 'highlight', 0);
+        //         //possibleMoves.push(realCoords);
+        //         //console.log(realCoords);
+        //         possibleMoves.push(gameBoard[piece.xBoard-2][piece.yBoard-2]);
+        //     }
+        // }
+        // return possibleMoves;
         //return an array of places it can jump to
         //needs to have a piece between it and empty tile
     }
@@ -124,22 +287,16 @@ GameStates.makeGame = function(game, shared)
     //moves selected checker to a tile
     function moveChecker(tile)
     {
-       // let pieceX = convertCoordinatesToBoard(piece.posX, piece.posY)[0];
-       // let pieceY = convertCoordinatesToBoard(piece.posX, piece.posY)[1];
-
         if(currChecker == null)
         {
             console.log("Select a piece!");
         }
         else
         {
-            console.log(currChecker);
+            //console.log(currChecker);
             gameBoard[currChecker.xBoard][currChecker.yBoard] = 0;
-    
-            // let newX = convertCoordinatesToReal(posX, posY)[0];
-            // let newY = convertCoordinatesToReal(posX, posY)[1];
-            gameBoard[tile.xBoard][tile.yBoard] = currChecker.pieceVal;
-            game.physics.arcade.moveToObject(currChecker, tile, 3);
+            //gameBoard[tile.xBoard][tile.yBoard] = currChecker.pieceVal;
+            //game.physics.arcade.moveToObject(currChecker, tile);
             currChecker.world.x = tile.world.x;
             currChecker.world.y = tile.world.y;
     
@@ -149,10 +306,6 @@ GameStates.makeGame = function(game, shared)
 
     function canPieceJump(piece)
     {
-        // let pieceX = convertCoordinatesToBoard(piece.posX, piece.posY)[0];
-        // let pieceY = convertCoordinatesToBoard(piece.posX, piece.posY)[1];
-
-        // let pieceVal = gameBoard[pieceX][pieceY];
         let x = piece.xBoard;
         let y = piece.yBoard;
         let val = piece.pieceVal;
@@ -190,6 +343,7 @@ GameStates.makeGame = function(game, shared)
                     //piece.input.enableDrag();
                     //piece.events.onInputDown.add(selectChecker, this);
                     piece.events.onInputDown.add(selectChecker, this)
+                    gameBoard[x][y] = piece;
                     //image.events.onInputDown.add(clickListener, {param1: value1, param2: value2});
                     //image.events.onInputDown.add(function(image){clickListener(image, array)}, this);
                     //the snap is set to every 100x100 pixels
@@ -205,6 +359,7 @@ GameStates.makeGame = function(game, shared)
 
                     tile.inputEnabled = true;
                     tile.events.onInputDown.add(moveChecker, this)
+                    gameBoard[x][y] = tile;
                     // piece.inputEnabled = true;
                     // piece.input.enableDrag();
                     // piece.input.onDown.add(selectChecker, this, piece);
@@ -271,9 +426,11 @@ GameStates.makeGame = function(game, shared)
     return {
 
         create: function () {
+            game.physics.startSystem(Phaser.Physics.ARCADE);
             let board = game.add.sprite(0, 0, 'board');
             tileGroup = game.add.group();
             pieceGroup = game.add.group();
+            highlightGroup = game.add.group();
             //piece = game.add.sprite(0, 0, 'piece');
             //tile = game.add.sprite(0, 0, 'tile');
             addStartingPieces();
