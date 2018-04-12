@@ -55,9 +55,31 @@ GameStates.makeGame = function(game, shared)
         return Math.sqrt(Math.pow((x1-x2),2)+Math.pow((y1-y2),2));
     }
 
-    function jumpChecker()
+    var medianChecker = function(x1, y1, x2, y2)
+    {
+        let coords = [(x2 - x1)/2, (y2 - y1)/2];
+        console.log(coords);
+
+        return  [coords[0] + x1, coords[1] + y1];
+        //gameBoard[((x1 + x2)/2),((y1 + y2)/2)];
+    }
+
+    function jumpChecker(tile)
     {
         //adds the point value to the jumping checker
+        console.log("moving");
+        if(currChecker == null)
+        {
+            console.log("Select a piece!");
+        }
+        else
+        {
+            console.log(currChecker);
+            gameBoard[currChecker.xBoard][currChecker.yBoard] = 0;
+            //game.physics.arcade.moveToObject(currChecker, tile);
+            currChecker.world.x = tile.world.x;
+            currChecker.world.y = tile.world.y;
+        }
     }
 
     function selectChecker(piece)
@@ -71,6 +93,7 @@ GameStates.makeGame = function(game, shared)
         findPossibleMoves(piece);
         possibleMoves.forEach(tile => {
             let newHL = highlightGroup.create(tile.world.x, tile.world.y, 'highlight', 0);
+            newHL.events.onInputDown.add(moveChecker, this)
             tileHighlights.push(newHL);
         });
     }
@@ -181,7 +204,6 @@ GameStates.makeGame = function(game, shared)
                         possibleMoves.push(currPerimeter);
                     }
                 }
-
             }
             console.log(possibleMoves);
             return possibleMoves;
@@ -191,17 +213,50 @@ GameStates.makeGame = function(game, shared)
     //moves selected checker to a tile
     function moveChecker(tile)
     {
+        console.log("moving");
         if(currChecker == null)
         {
             console.log("Select a piece!");
         }
         else
         {
-            //console.log(currChecker);
-            gameBoard[currChecker.xBoard][currChecker.yBoard] = 0;
+            console.log(currChecker.xBoard, currChecker.yBoard);
+            console.log(medianChecker(currChecker.xBoard, currChecker.yBoard, 
+                tile.xBoard, tile.yBoard));
+            //gameBoard[currChecker.xBoard][currChecker.yBoard] = 0;
             //game.physics.arcade.moveToObject(currChecker, tile);
-            currChecker.world.x = tile.world.x;
-            currChecker.world.y = tile.world.y;
+            let middleCheckers = medianChecker(currChecker.xBoard, currChecker.yBoard, 
+                tile.xBoard, tile.yBoard)
+
+            console.log(middleCheckers[0] , middleCheckers[1]);
+            let middleChecker = getPieceOnBoard(middleCheckers[0], middleCheckers[1])
+
+
+            // console.log(middleChecker);
+            // console.log(middleChecker.pieceVal);
+
+
+            let sumChecker = (currChecker.pieceVal + middleChecker.pieceVal) * comboVal;
+
+            console.log(sumChecker);
+            
+            addPiece(tile.xBoard, tile.yBoard, sumChecker);
+            currChecker.destroy();
+            currChecker.pieceVal = 0;
+            middleChecker.destroy();
+            middleChecker.pieceVal = 0;
+
+            addRandomPiece();
+
+            // middleCheckers.forEach(element =>{
+            //     if(element.key == "piece")
+            //     {
+            //         element.destroy();
+            //     }
+            // })
+
+            // currChecker.world.x = tile.world.x;
+            // currChecker.world.y = tile.world.y;
         }
     }
 
@@ -281,32 +336,52 @@ GameStates.makeGame = function(game, shared)
         return false;
     }
 
-    function addPiece()
+    function getPieceOnBoard(x, y)
+    {
+        let pieceOnBoard;
+        pieceGroup.children.forEach(piece =>{
+            if(piece.xBoard == x && piece.yBoard == y)
+            {
+                pieceOnBoard = piece;
+            }
+        })
+        return pieceOnBoard;
+    }
+
+    function addRandomPiece()
     {
         let x = game.rnd.between(0, 7);
         let y = game.rnd.between(0, 7);
         if(spaceAvailable(x, y))
         {
-            gameBoard[x][y] = 1;
+            addPiece(x, y, 1);
+        }
+    }
+
+    function addPiece(x, y, val)
+    {
+        //gameBoard[x][y] = 1;
             let realCoords = convertCoordinatesToReal(x, y);
             let piece = pieceGroup.create(realCoords[0], realCoords[1], 'piece', 0); 
-            piece.pieceVal = 1;
+            piece.pieceVal = val;
             piece.xBoard = x;
             piece.yBoard = y;
             let style = { font: "30px Arial", fill: "#ffffff", align: "center" };  
             let label_score = game.add.text(20, 20, String(piece.pieceVal), style);
             piece.addChild(label_score);
-        }
+            gameBoard[x][y] = piece;
+            piece.inputEnabled = true;
+            piece.events.onInputDown.add(selectChecker, this);
     }
 
-    function addPieces(numOfPieces)
+    function addRandomPieces(numOfPieces)
     {
         //randomly adds a piece to the board
         //figure out the spawning points for more pieces
         var i;
         for(i = 0; i < numOfPieces; i++)
         {
-            addPiece();
+            addRandomPiece();
         }
     }
 
@@ -321,7 +396,7 @@ GameStates.makeGame = function(game, shared)
     {
         //converts board coordinates to real coordinates
         //returns an array with the new coordinates
-        return[xBoard*tileSize, yBoard*tileSize];
+        return [xBoard*tileSize, yBoard*tileSize];
     }
 
     return {
