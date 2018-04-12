@@ -172,116 +172,12 @@ GameStates.makeGame = function(game, shared)
                         console.log(checkJump(perimeter[i], i));
                         currPerimeter = checkJump(perimeter[i], i);
                     }
-
                     possibleMoves.push(currPerimeter);
-
-                    // if(i == 0)
-                    // {
-                    //     let newPerimeter = checkJump(perimeter[i], i);
-                    // }
-                    // if(i == 1)
-                    // {
-
-                    // }
-                    // if(i == 2)
-                    // {
-
-                    // }
-                    // if(i == 3)
-                    // {
-
-                    // }
-                }
-                else
-                {
-                    // newPerimeter[i] = null;
-                    // possibleMoves = newPerimeter;
-                }
             }
 
         }
-        
-        // perimeter.forEach(move => 
-        //     {
-            
-        //         if(move > 0)
-        //         {
-        //             let newPerimeter = checkPerimeter(move);
-        //             if
-        //         }
-        //     })
-
-        // array.forEach(element => {
-            
-        // });
-
-        //if(perimeter[i] > 0)
-
         console.log(possibleMoves);
-
         return possibleMoves;
-
-
-
-
-
-
-        // possibleMoves = [];
-        // if(gameBoard[piece.xBoard+1][piece.yBoard+1] != 0)
-        // {
-        //     //console.log("spot located");
-        //     if((gameBoard[piece.xBoard+1][piece.yBoard+1] <= piece.pieceVal) 
-        //         && (gameBoard[piece.xBoard+2][piece.yBoard+2] == 0))
-        //     {
-        //         let realCoords = convertCoordinatesToReal(piece.xBoard+2, piece.yBoard+2);
-        //         //let newHL = highlightGroup.create(realCoords[0], realCoords[1], 'highlight', 0);
-        //         //possibleMoves.push(realCoords);
-        //         console.log(realCoords);
-        //         possibleMoves.push(gameBoard[piece.xBoard+2][piece.yBoard+2]);
-        //     }
-        // }
-        
-        // if(gameBoard[piece.xBoard-1][piece.yBoard+1] != 0)
-        // {
-        //     if((gameBoard[piece.xBoard-1][piece.yBoard+1] <= piece.pieceVal) 
-        //         && (gameBoard[piece.xBoard-2][piece.yBoard+2] == 0))
-        //     {
-        //         let realCoords = convertCoordinatesToReal(piece.xBoard-2, piece.yBoard+2);
-        //         //let newHL = highlightGroup.create(realCoords[0], realCoords[1], 'highlight', 0);
-        //         //possibleMoves.push(realCoords);
-        //         //console.log(realCoords);
-        //         possibleMoves.push(gameBoard[piece.xBoard-2][piece.yBoard+2]);
-        //     }
-        // }
-
-        // if(gameBoard[piece.xBoard+1][piece.yBoard-1] != 0)
-        // {
-        //     if((gameBoard[piece.xBoard+1][piece.yBoard-1] <= piece.pieceVal) 
-        //         && (gameBoard[piece.xBoard+2][piece.yBoard-2] == 0))
-        //     {
-        //         let realCoords = convertCoordinatesToReal(piece.xBoard+2, piece.yBoard-2);
-        //         //let newHL = highlightGroup.create(realCoords[0], realCoords[1], 'highlight', 0);
-        //         //possibleMoves.push(realCoords);
-        //         //console.log(realCoords);
-        //         possibleMoves.push(gameBoard[piece.xBoard+2][piece.yBoard-2]);
-        //     }
-        // }
-       
-        // if(gameBoard[piece.xBoard-1][piece.yBoard-1] != 0)
-        // {
-        //     if((gameBoard[piece.xBoard-1][piece.yBoard-1] <= piece.pieceVal) 
-        //         && (gameBoard[piece.xBoard-2][piece.yBoard-2] == 0))
-        //     {
-        //         let realCoords = convertCoordinatesToReal(piece.xBoard-2, piece.yBoard-2);
-        //         //let newHL = highlightGroup.create(realCoords[0], realCoords[1], 'highlight', 0);
-        //         //possibleMoves.push(realCoords);
-        //         //console.log(realCoords);
-        //         possibleMoves.push(gameBoard[piece.xBoard-2][piece.yBoard-2]);
-        //     }
-        // }
-        // return possibleMoves;
-        //return an array of places it can jump to
-        //needs to have a piece between it and empty tile
     }
 
     //moves selected checker to a tile
