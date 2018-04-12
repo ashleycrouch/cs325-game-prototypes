@@ -33,6 +33,17 @@ var gameBoard = [
     [  0, -1,  0, -1,  0, -1,  0,-1 ]
   ];
 
+  var startGameBoard = [ 
+    [ -1,  0, -1,  0, -1,  0, -1, 0 ],
+    [  0, -1,  0, -1,  0, -1,  0,-1 ],
+    [ -1,  0, -1,  1, -1,  1, -1, 0 ],
+    [  0, -1,  1, -1,  1, -1,  0,-1 ],
+    [ -1,  0, -1,  1, -1,  1, -1, 0 ],
+    [  0, -1,  1, -1,  1, -1,  0,-1 ],
+    [ -1,  0, -1,  0, -1,  0, -1, 0 ],
+    [  0, -1,  0, -1,  0, -1,  0,-1 ]
+  ];
+
 GameStates.makeGame = function(game, shared) 
 {
     currChecker = null;
@@ -320,24 +331,7 @@ GameStates.makeGame = function(game, shared)
         {
             for(y = 0; y < 8; y++)
             {
-                if(gameBoard[x][y] == 1)
-                {
-                    let realCoords = convertCoordinatesToReal(x, y);
-                    let piece = pieceGroup.create(realCoords[0], realCoords[1], 'piece', 0);
-                    let style = { font: "30px Arial", fill: "#ffffff", align: "center" };  
-                    piece.pieceVal = 1;
-                    piece.xBoard = x;
-                    piece.yBoard = y;
-                    let label_score = game.add.text(20, 20, String(piece.pieceVal), style);
-                    piece.addChild(label_score);
-
-                    piece.inputEnabled = true;
-                    //piece.input.enableDrag();
-                    piece.events.onInputDown.add(selectChecker, this)
-                    gameBoard[x][y] = piece;
-                }
-
-                if(gameBoard[x][y] == 0)
+                if(startGameBoard[x][y] == 0 || startGameBoard[x][y] == 1)
                 {
                     let realCoords = convertCoordinatesToReal(x, y);
                     let tile = tileGroup.create(realCoords[0], realCoords[1], 'tile', 0);
@@ -352,6 +346,10 @@ GameStates.makeGame = function(game, shared)
                     // piece.input.onDown.add(selectChecker, this, piece);
                     //the snap is set to every 100x100 pixels
                     // piece.input.enableSnap(100, 100, true, true);
+                }
+                if(startGameBoard[x][y] == 1)
+                {
+                    addPiece(x, y, 1);
                 }
             }
         }
