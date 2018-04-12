@@ -33,16 +33,17 @@ body
 
 <ul>
 <li><strong>Originality:</strong>
-What is original about your game?
+The game combines the playstyles of games like 2048 with the movement mechanics of checkers
 </li>
 
 <li><strong>Technical Merit:</strong>
 What is interesting about your game technology?
+I used a 2D array to manage the gameboard. 
 </li>
 
 <li><strong>Prototype Postmortem:</strong>
 What did you learn from this prototype?
-What was the easiest or hardest part of making it?
+The easiest part was making the graphics. The hardest part was making sure the digital version of the gameboard was keeping up to date with all of the changes and implementing checker movement.
 </li>
 
 <li><strong>Prototype Assets:</strong>
@@ -56,7 +57,6 @@ Did you make your prototype assets from scratch? Did you borrow them? Cite your 
 </li>
 
 <li><strong>Prototype Closest Other Game:</strong>
-Which other game most closely resembles your game? If you are borrowing code from a Phaser Example, you must say so here. If you borrow code from elsewhere, you must say so here.
 <ul>
 <li>This game closely resembles my analog assignment, <a href="https://docs.google.com/document/d/1uZaHJVYFGO2OFldzS5EI9TnAp4bs_-CHlimJDad71ww/edit?usp=sharing">Weird Checkers</a>.</li>
 </ul>
@@ -71,7 +71,7 @@ No Storymatic theme was used.
 </li>
 
 <li><strong>Mandated Variety:</strong>
-State which input, randomness, genre, and play style you used in this prototype.
+Point and click input, where when you click on a checker, it shows you the moves you can do. When you click a spot it moves the checker and jumps over the pieces. A new randomly-placed checker is spawned after the player moves a piece.
 </li>
 
 <li><strong>Prototype Goal:</strong>
@@ -83,10 +83,10 @@ This game is supposed to be a quick game that you can play when you’re bored a
 </li>
 
 <li><strong>Gameplay:</strong>
-The player can move any of the pieces on the board in a diagonal direction, only moving onto black squares. they can only move when they are able to jump over a piece with equal or lesser point value to an empty space.
+The player can only move when they are able to jump over a piece with equal or lesser point value to an empty space.
 When the player jumps over a piece, the point value times the combo multiplier of the piece is added to the jumping piece. After each turn, a new piece is added randomly to the board. If the player is able to jump over another piece after moving, they may jump the piece and add 1 to the combo multiplier. The combo multiplier is reset to 1 each turn.
  If the player is unable to move any of the pieces at the start of their turn, then the game is over. The goal is to get the highest point value piece they can.
- The playing capabilities aren't 100% in yet, as Phaser is confusing. I was able to set up the system for the checkerboard and pieces, but not for jumping and player input.
+ I was able to set up the system for the checkerboard and pieces, as well as pieces can now jump over other pieces and change their point values. New pieces are also randomly put in after the player completes a jump. The combo multiplyer isn't implemented yet, and there are still a few bugs with jumping.
 </li>
 
 <li><strong>Strategies:</strong>
