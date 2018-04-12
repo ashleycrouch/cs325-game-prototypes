@@ -10,6 +10,7 @@ var tileGroup;
 let tileSize = 100;
 
 var possibleMoves = []; //array of possible moves
+var tileHighlights = []; //array of highlights that go on tiles
 var highlightGroup;
 
 var currChecker; //the selected checker piece
@@ -67,9 +68,11 @@ GameStates.makeGame = function(game, shared)
         //currCheckerX = convertCoordinatesToBoard(piece.world.x, piece.world.y)[0];
         //currCheckerY = convertCoordinatesToBoard(piece.world.x, piece.world.y)[1];
         currCheckerHighlight = highlightGroup.create(piece.world.x, piece.world.y, 'highlight', 0);
-        let moves = findPossibleMoves(piece);
-        //possibleMoves = findPossibleMoves(piece);
-        console.log(moves);
+        findPossibleMoves(piece);
+        possibleMoves.forEach(tile => {
+            let newHL = highlightGroup.create(tile.world.x, tile.world.y, 'highlight', 0);
+            tileHighlights.push(newHL);
+        });
     }
 
     function deselectChecker(piece)
@@ -81,8 +84,13 @@ GameStates.makeGame = function(game, shared)
             //currCheckerHighlight.body = null;
             currCheckerHighlight = null;
             currChecker = null;
-           // currCheckerX = null;
-           // currCheckerY = null;
+        }
+        if(tileHighlights)
+        {
+            tileHighlights.forEach(hl => {
+                hl.destroy();
+            })
+            tileHighlights = [];
         }
     }
 
@@ -110,10 +118,10 @@ GameStates.makeGame = function(game, shared)
         {
             perimeterMoves[3] = gameBoard[piece.xBoard+1][piece.yBoard+1];
         }
-
         return perimeterMoves;
     }
 
+    //returns the tile in i direction that can be jumped to
     function checkJump(piece, i)
     {
         console.log(piece.xBoard + " : " + piece. yBoard);
@@ -122,7 +130,6 @@ GameStates.makeGame = function(game, shared)
         {
             case 0:
             if((gameBoard[piece.xBoard-1][piece.yBoard-1]).key == "tile")
-            //if(tileGroup.children.indexOf(gameBoard[piece.xBoard-1][piece.yBoard-1]) > -1)
             {
                 console.log("case 0")
                 return gameBoard[piece.xBoard-1][piece.yBoard-1];
@@ -171,13 +178,14 @@ GameStates.makeGame = function(game, shared)
                     {
                         console.log(checkJump(perimeter[i], i));
                         currPerimeter = checkJump(perimeter[i], i);
+                        possibleMoves.push(currPerimeter);
                     }
-                    possibleMoves.push(currPerimeter);
-            }
+                }
 
+            }
+            console.log(possibleMoves);
+            return possibleMoves;
         }
-        console.log(possibleMoves);
-        return possibleMoves;
     }
 
     //moves selected checker to a tile
@@ -191,12 +199,9 @@ GameStates.makeGame = function(game, shared)
         {
             //console.log(currChecker);
             gameBoard[currChecker.xBoard][currChecker.yBoard] = 0;
-            //gameBoard[tile.xBoard][tile.yBoard] = currChecker.pieceVal;
             //game.physics.arcade.moveToObject(currChecker, tile);
             currChecker.world.x = tile.world.x;
             currChecker.world.y = tile.world.y;
-    
-            //gameBoard[posX][posY] = piece.pieceVal;
         }
     }
 
