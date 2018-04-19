@@ -1,0 +1,111 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="UTF-8" />
+	<title>Phaser Basic Project Template</title>
+	<script src="js/phaser.min.js"></script>
+	<!-- Boot.js must come first since it creates the BasicGame object
+	that stores all the states. -->
+	<script src="js/Boot.js"></script>
+	<script src="js/Preloader.js"></script>
+	<script src="js/MainMenu.js"></script>
+	<script src="js/Game.js"></script>
+	<!-- main.js must come last since it references the other ones. -->
+	<script src="js/main.js"></script>
+
+<style>
+body
+{
+    color: #777;
+    font-family: "Avenir", Verdana, sans-serif;
+}
+#readme
+{
+    margin-top: 10px;
+}
+</style>
+
+</head>
+<body>
+<div id="game"></div>
+<div id="readme">
+<h2>Suit Yourself</h2>
+
+<ul>
+<li><strong>Originality:</strong>
+What is original about your game?
+</li>
+
+<li><strong>Technical Merit:</strong>
+What is interesting about your game technology?
+</li>
+
+<li><strong>Prototype Postmortem:</strong>
+What did you learn from this prototype?
+What was the easiest or hardest part of making it?
+</li>
+
+<li><strong>Prototype Assets:</strong>
+Did you make your prototype assets from scratch? Did you borrow them? Cite your sources here.
+<ul>
+<li>Loading screen: from template</li>
+<li>Puppy image: from template</li>
+<li>Checker Piece: self-made</li>
+<li>Checker Board: self-made</li>
+</ul>
+</li>
+
+<li><strong>Prototype Closest Other Game:</strong>
+Which other game most closely resembles your game? If you are borrowing code from a Phaser Example, you must say so here. If you borrow code from elsewhere, you must say so here.
+<ul>
+<li>This game closely resembles my analog assignment, <a href="https://docs.google.com/document/d/1uZaHJVYFGO2OFldzS5EI9TnAp4bs_-CHlimJDad71ww/edit?usp=sharing">Weird Checkers</a>.</li>
+</ul>
+</li>
+
+<li><strong>High Concept:</strong>
+	A single-player twist on the classic game of checkers, with emphasis on stacking high and strategizing. 
+</li>
+
+<li><strong>Theme:</strong>
+No Storymatic theme was used.
+</li>
+
+<li><strong>Mandated Variety:</strong>
+State which input, randomness, genre, and play style you used in this prototype.
+</li>
+
+<li><strong>Prototype Goal:</strong>
+What game mechanic is this prototype evaluating?
+</li>
+
+<li><strong>Player Experience Goals:</strong>
+This game is supposed to be a quick game that you can play when you’re bored and have time to kill. Try to get as high of a score as you can to beat your friends and family.
+</li>
+
+<li><strong>Gameplay:</strong>
+The player can move any of the pieces on the board in a diagonal direction, only moving onto black squares. they can only move when they are able to jump over a piece with equal or lesser point value to an empty space.
+When the player jumps over a piece, the point value times the combo multiplier of the piece is added to the jumping piece. After each turn, a new piece is added randomly to the board. If the player is able to jump over another piece after moving, they may jump the piece and add 1 to the combo multiplier. The combo multiplier is reset to 1 each turn.
+ If the player is unable to move any of the pieces at the start of their turn, then the game is over. The goal is to get the highest point value piece they can.
+ The playing capabilities aren't 100% in yet, as Phaser is confusing. I was able to set up the system for the checkerboard and pieces, but not for jumping and player input.
+</li>
+
+<li><strong>Strategies:</strong>
+There are a few strategies players can try. One is to stack everything into one checker, but the best method seems to be spreading it out and not jumping at every chance you have to do double or triple points. New checkers only spawn one at a time, so going after every point value is sometimes not the best. Try to strategize a bit.
+</li>
+
+<li><strong>Story/Setting/Premise:</strong>
+There are no characters or story explicitely said. 
+</li>
+
+<li><strong>Target Audience:</strong>
+A single sentence that describes the demographic you're trying to reach.
+</li>
+
+<li><strong>Play Time:</strong>
+A few minutes.
+</li>
+
+</ul>
+</div>
+</body>
+</html>
