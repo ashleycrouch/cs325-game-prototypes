@@ -1,10 +1,18 @@
 "use strict";
 
 //The initial setup
-var playerArray = [];
-var enemyArray = [];
+var playerCards;
+var enemyCards;
 
-GameStates.makeGame = function( game, shared ) 
+var playerHealth;
+var enemyHealth;
+
+var playerDiamonds;
+var enemyDiamonds;
+
+var allowInput = true;
+
+GameStates.makeGame = function(game, shared) 
 {
     function quitGame() {
 
@@ -15,8 +23,49 @@ GameStates.makeGame = function( game, shared )
         game.state.start('MainMenu');
     }
 
+    function playerGainHearts(val)
+    {
+        playerHealth += val;
+    }
+
+    function playerLoseHearts(val)
+    {
+        playerHealth -= val;
+    }
+
+    function enemyGainHearts(val)
+    {
+        enemyHealth += val;
+    }
+
+    function enemyLoseHearts(val)
+    {
+        enemyHealth -= val;
+    }
+
+    function playerGainDiamonds(val)
+    {
+        playerDiamonds += val;
+    }
+
+    function playerLoseDiamonds(val)
+    {
+        playerDiamonds -= val;
+    }
+
+    function enemyGainDiamonds(val)
+    {
+        enemyDiamonds += val;
+    }
+
+    function enemyLoseDiamonds(val)
+    {
+        enemyDiamonds -= val;
+    }
+
     //array shuffling method
-    function shuffle(array) {
+    function shuffle(array) 
+    {
         var currentIndex = array.length, temporaryValue, randomIndex;
       
         // While there remain elements to shuffle...
@@ -32,35 +81,19 @@ GameStates.makeGame = function( game, shared )
           array[randomIndex] = temporaryValue;
         }
         return array;
-      }
-    
-    function selectChecker(piece, temp)
-    {
-        console.log(temp);
-        if(allowInput)
-        {
-            currChecker = piece;
-            selectedCheckerStartPos.x = piece.posX;
-            selectedCheckerStartPos.y = piece.posY;
-        }
     }
 
     return {
 
         create: function () {
             let board = game.add.sprite(0, 0, 'board');
-            pieceGroup = game.add.group();
+            //pieceGroup = game.add.group();
+            playerCards = game.add.group();
+            enemyCards = game.add.group();
             //piece = game.add.sprite(0, 0, 'piece');
             game.input.mouse.capture = true;
             //game.input.mousePointer.x/.y
-            addStartingPieces();
-            
-            
-            //new code
-            selectedCheckerStartPos = {x: 0, y: 0};
-            //used to disable input while gems are dropping down and respawning
             allowInput = false;
-            game.input.addMoveCallback(moveChecker, this);
         },
 
         update: function () {
