@@ -4,11 +4,7 @@
 var playerCards;
 var enemyCards;
 
-var playerHealth;
-var enemyHealth;
-
-var playerDiamonds;
-var enemyDiamonds;
+var baseDeck = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, J, Q, K];
 
 var allowInput = true;
 
@@ -23,44 +19,45 @@ GameStates.makeGame = function(game, shared)
         game.state.start('MainMenu');
     }
 
-    function playerGainHearts(val)
+    function Player()
     {
-        playerHealth += val;
+        this.hearts = shuffle(baseDeck);
+        this.diamonds = shuffle(baseDeck);
+        this.clubs = shuffle(baseDeck);
+        this.spades = shuffle(baseDeck);
+
+        this.heartsUsed = [];
+        this.diamondsUsed = [];
+        this.clubsUsed = [];
+        this.spadesUsed = []; //fill these using array.pop() method
+
+        this.heartStash = 20;
+        this.diamondStash = 0;
     }
 
-    function playerLoseHearts(val)
+    Player.gainHearts = function(val)
     {
-        playerHealth -= val;
+        this.heartStash += val;
     }
 
-    function enemyGainHearts(val)
+    Player.loseHearts = function(val)
     {
-        enemyHealth += val;
+        this.heartStash -= val;
     }
 
-    function enemyLoseHearts(val)
+    Player.gainDiamonds = function(val)
     {
-        enemyHealth -= val;
+        this.diamondStash += val;
     }
 
-    function playerGainDiamonds(val)
+    Player.loseDiamonds = function(val)
     {
-        playerDiamonds += val;
-    }
-
-    function playerLoseDiamonds(val)
-    {
-        playerDiamonds -= val;
+        this.diamondStash -= val;
     }
 
     function enemyGainDiamonds(val)
     {
         enemyDiamonds += val;
-    }
-
-    function enemyLoseDiamonds(val)
-    {
-        enemyDiamonds -= val;
     }
 
     //array shuffling method
