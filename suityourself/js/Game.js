@@ -4,7 +4,7 @@
 var playerCards;
 var enemyCards;
 
-var baseDeck = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, J, Q, K];
+var baseDeck = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K'];
 
 var allowInput = true;
 
@@ -33,6 +33,37 @@ GameStates.makeGame = function(game, shared)
 
         this.heartStash = 20;
         this.diamondStash = 0;
+    }
+
+    //make one function that works for all decks?
+    Player.useHearts = function()
+    {
+        let heartVal = this.hearts.pop();
+        this.heartsUsed.push(heartVal);
+        if(heartVal == 'K')
+        {
+
+        }
+        else if(heartVal == 'Q')
+        {
+            if(this.heartsUsed.indexOf('J') == -1 && this.heartsUsed.indexOf('K') == -1)
+            {
+                this.heartsUsed = [];
+                this.hearts = shuffle(baseDeck);
+            }
+            else
+            {
+                //player wins the game
+            }
+        }
+        else if(heartVal == 'J')
+        {
+
+        }
+        else
+        {
+            this.gainHearts(heartVal);
+        }
     }
 
     Player.gainHearts = function(val)
