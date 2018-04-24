@@ -42,7 +42,9 @@ GameStates.makeGame = function(game, shared)
         this.heartsUsed.push(heartVal);
         if(heartVal == 'K')
         {
-
+            heartVal = this.hearts.pop();
+            this.heartsUsed.push(heartVal);
+            this.gainHearts(heartVal*2);
         }
         else if(heartVal == 'Q')
         {
@@ -58,7 +60,11 @@ GameStates.makeGame = function(game, shared)
         }
         else if(heartVal == 'J')
         {
-
+            heartVal = this.heartsUsed[this.heartsUsed.length-1];
+            if(heartVal == null)
+            {
+                //don't do anything? 
+            }
         }
         else
         {
