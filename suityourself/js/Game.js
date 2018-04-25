@@ -6,6 +6,9 @@ var enemyCards;
 
 var baseDeck = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K'];
 
+var player = new Player();
+var enemy = new Player();
+
 var allowInput = true;
 
 GameStates.makeGame = function(game, shared) 
@@ -128,8 +131,96 @@ GameStates.makeGame = function(game, shared)
     }
 
     //handles spades deck
+    Player.useSpades = function(enemy)
+    {
+        let spadeVal = this.spades.pop();
+        this.spadesUsed.push(spadeVal);
+        if(spadeVal == 'K')
+        {
+            spadeVal = this.spades.pop();
+            this.spadesUsed.push(spadeVal);
+            if(spadeVal == 'J')
+            {
+                spadeVal = this.spades.pop();
+                this.spadesUsed.push(spadeVal);
+                enemy.loseHearts(spadeVal*4);
+            }
+            else
+            {
+                enemy.loseHearts(spadeVal*2);
+            }
+        }
+        else if(spadeVal == 'Q')
+        {
+            if(this.spadesUsed.indexOf('J') == -1 && this.spadesUsed.indexOf('K') == -1)
+            {
+                this.spadesUsed = [];
+                this.spades = shuffle(baseDeck);
+            }
+            else
+            {
+                //player wins the game
+            }
+        }
+        else if(spadeVal == 'J')
+        {
+            spadeVal = this.spadesUsed[this.spadesUsed.length-1];
+            if(spadeVal != null)
+            {
+                enemy.loseHearts(spadeVal);
+            }
+        }
+        else
+        {
+            enemy.loseHearts(spadeVal);
+        }
+    }
 
     //handles clubs deck
+    Player.useClubs = function(enemy)
+    {
+        let clubVal = this.clubs.pop();
+        this.clubsUsed.push(clubVal);
+        if(clubVal == 'K')
+        {
+            clubVal = this.clubs.pop();
+            this.clubsUsed.push(clubVal);
+            if(clubVal == 'J')
+            {
+                clubVal = this.clubs.pop();
+                this.clubsUsed.push(clubVal);
+                enemy.loseDiamonds(clubVal*4);
+            }
+            else
+            {
+                enemy.loseDiamonds(clubVal*2);
+            }
+        }
+        else if(clubVal == 'Q')
+        {
+            if(this.clubsUsed.indexOf('J') == -1 && this.clubsUsed.indexOf('K') == -1)
+            {
+                this.clubsUsed = [];
+                this.clubs = shuffle(baseDeck);
+            }
+            else
+            {
+                //player wins the game
+            }
+        }
+        else if(clubVal == 'J')
+        {
+            clubVal = this.clubsUsed[this.clubsUsed.length-1];
+            if(clubVal != null)
+            {
+                enemy.loseDiamonds(clubVal);
+            }
+        }
+        else
+        {
+            enemy.loseDiamonds(clubVal);
+        }
+    }
 
     Player.gainHearts = function(val)
     {
