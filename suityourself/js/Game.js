@@ -35,7 +35,7 @@ GameStates.makeGame = function(game, shared)
         this.diamondStash = 0;
     }
 
-    //make one function that works for all decks?
+    //handles the hearts deck
     Player.useHearts = function()
     {
         let heartVal = this.hearts.pop();
@@ -44,7 +44,16 @@ GameStates.makeGame = function(game, shared)
         {
             heartVal = this.hearts.pop();
             this.heartsUsed.push(heartVal);
-            this.gainHearts(heartVal*2);
+            if(heartVal == 'J')
+            {
+                heartVal = this.hearts.pop();
+                this.heartsUsed.push(heartVal);
+                this.gainHearts(heartVal*4);
+            }
+            else
+            {
+                this.gainHearts(heartVal*2);
+            }
         }
         else if(heartVal == 'Q')
         {
@@ -61,9 +70,9 @@ GameStates.makeGame = function(game, shared)
         else if(heartVal == 'J')
         {
             heartVal = this.heartsUsed[this.heartsUsed.length-1];
-            if(heartVal == null)
+            if(heartVal != null)
             {
-                //don't do anything? 
+                this.gainHearts(heartVal);
             }
         }
         else
@@ -71,6 +80,56 @@ GameStates.makeGame = function(game, shared)
             this.gainHearts(heartVal);
         }
     }
+
+    //handles the diamond deck
+    Player.useDiamonds = function()
+    {
+        let diamondVal = this.diamonds.pop();
+        this.diamondsUsed.push(diamondVal);
+        if(diamondVal == 'K')
+        {
+            diamondVal = this.diamonds.pop();
+            this.diamondsUsed.push(diamondVal);
+            if(diamondVal == 'J')
+            {
+                diamondVal = this.diamonds.pop();
+                this.diamondsUsed.push(diamondVal);
+                this.gainDiamonds(diamondVal*4);
+            }
+            else
+            {
+                this.gainDiamonds(diamondVal*2);
+            }
+        }
+        else if(diamondVal == 'Q')
+        {
+            if(this.diamondsUsed.indexOf('J') == -1 && this.diamondsUsed.indexOf('K') == -1)
+            {
+                this.diamondsUsed = [];
+                this.diamonds = shuffle(baseDeck);
+            }
+            else
+            {
+                //player wins the game
+            }
+        }
+        else if(diamondVal == 'J')
+        {
+            diamondVal = this.diamondsUsed[this.diamondsUsed.length-1];
+            if(diamondVal != null)
+            {
+                this.gainDiamonds(diamondVal);
+            }
+        }
+        else
+        {
+            this.gainDiamonds(diamondVal);
+        }
+    }
+
+    //handles spades deck
+
+    //handles clubs deck
 
     Player.gainHearts = function(val)
     {
@@ -90,11 +149,6 @@ GameStates.makeGame = function(game, shared)
     Player.loseDiamonds = function(val)
     {
         this.diamondStash -= val;
-    }
-
-    function enemyGainDiamonds(val)
-    {
-        enemyDiamonds += val;
     }
 
     //array shuffling method
