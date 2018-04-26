@@ -280,10 +280,6 @@ GameStates.makeGame = function(game, shared)
 
     }
 
-
-
-    
-
     return {
 
         create: function () {
@@ -293,56 +289,32 @@ GameStates.makeGame = function(game, shared)
             allowInput = true;
 
             playerCards = game.add.group();
+            playerCards.inputEnableChildren = true;
+            //playerCards.onChildInput.useHandCursor = true;
+            playerCards.onChildInputOver.add(function over(sprite) 
+            {
+                game.add.tween(sprite.scale).to( { x: 1.1, y: 1.1 }, 1, Phaser.Easing.Linear.None, true);
+            }, this);
+            playerCards.onChildInputOut.add(function out(sprite)
+            {game.add.tween(sprite.scale).to( { x: 1, y: 1 }, 1, Phaser.Easing.Linear.None, true); /*try to add text to say what the button does*/
+            }, this);
 
             let heartButton = playerCards.create(100, 700, 'heart');
             heartButton.anchor.setTo(0.5, 0.5);
-            heartButton.inputEnabled = true;
-            heartButton.events.onInputOver.add(function over() 
-                {
-                    game.add.tween(heartButton.scale).to( { x: 1.1, y: 1.1 }, 2000, Phaser.Easing.Linear.None, true);
-                });
-            heartButton.events.onInputOut.add(function out()
-                {game.add.tween(heartButton.scale).to( { x: 1, y: 1 }, 2000, Phaser.Easing.Linear.None, true); /*try to add text to say what the button does*/
-                });
             //text = game.add.text(250, 16, '', { fill: '#ffffff' });
-
             heartButton.events.onInputDown.add(player.useHearts, this);
             heartButton.input.useHandCursor = true;
 
             let diamondButton = playerCards.create(300, 700, 'diamond');
             diamondButton.anchor.setTo(0.5, 0.5);
-            diamondButton.inputEnabled = true;
-            diamondButton.events.onInputOver.add(function over() 
-                {
-                    game.add.tween(diamondButton.scale).to( { x: 1.1, y: 1.1 }, 2000, Phaser.Easing.Linear.None, true);
-                });
-            diamondButton.events.onInputOut.add(function out()
-                {game.add.tween(diamondButton.scale).to( { x: 1, y: 1 }, 2000, Phaser.Easing.Linear.None, true); /*try to add text to say what the button does*/
-                });
             diamondButton.input.useHandCursor = true;
 
             let spadeButton = playerCards.create(500, 700, 'spade');
             spadeButton.anchor.setTo(0.5, 0.5);
-            spadeButton.inputEnabled = true;
-            spadeButton.events.onInputOver.add(function over() 
-                {
-                    game.add.tween(spadeButton.scale).to( { x: 1.1, y: 1.1 }, 2000, Phaser.Easing.Linear.None, true);
-                });
-            spadeButton.events.onInputOut.add(function out()
-                {game.add.tween(spadeButton.scale).to( { x: 1, y: 1 }, 2000, Phaser.Easing.Linear.None, true); /*try to add text to say what the button does*/
-                });
             spadeButton.input.useHandCursor = true;
 
             let clubButton = playerCards.create(700, 700, 'club');
             clubButton.anchor.setTo(0.5, 0.5);
-            clubButton.inputEnabled = true;
-            clubButton.events.onInputOver.add(function over() 
-                {
-                    game.add.tween(clubButton.scale).to( { x: 1.1, y: 1.1 }, 2000, Phaser.Easing.Linear.None, true);
-                });
-                clubButton.events.onInputOut.add(function out()
-                {game.add.tween(clubButton.scale).to( { x: 1, y: 1 }, 2000, Phaser.Easing.Linear.None, true); /*try to add text to say what the button does*/
-                });
             clubButton.input.useHandCursor = true;
 
             enemyCards = game.add.group();
