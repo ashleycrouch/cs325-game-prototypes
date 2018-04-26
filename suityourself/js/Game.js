@@ -6,13 +6,27 @@ var enemyCards;
 
 var baseDeck = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 'J', 'Q', 'K'];
 
-var player;
-var enemy;
+var player;// = {hearts:[], diamonds:[], clubs:[], spades:[], heartStash:[]};
+var enemy;// = {hearts:[], diamonds:[], clubs:[], spades:[]};
 
 var allowInput = true;
 
 GameStates.makeGame = function(game, shared) 
-{
+{//this.hearts = baseDeck;
+    this.hearts = shuffle(baseDeck);
+    console.log(this.hearts);
+    this.diamonds = shuffle(baseDeck);
+    this.clubs = shuffle(baseDeck);
+    this.spades = shuffle(baseDeck);
+
+    this.heartsUsed = [];
+    this.diamondsUsed = [];
+    this.clubsUsed = [];
+    this.spadesUsed = []; //fill these using array.pop() method
+
+    this.heartStash = 20;
+    this.diamondStash = 0;
+
     function quitGame() {
 
         //  Here you should destroy anything you no longer need.
@@ -38,25 +52,103 @@ GameStates.makeGame = function(game, shared)
     {
         constructor()
         {
+            { //Variables and Initialization
             //this.hearts = baseDeck;
             this.hearts = shuffle(baseDeck);
-            //console.log(this.hearts);
+            console.log(this.hearts);
             this.diamonds = shuffle(baseDeck);
             this.clubs = shuffle(baseDeck);
             this.spades = shuffle(baseDeck);
-    
+
             this.heartsUsed = [];
             this.diamondsUsed = [];
             this.clubsUsed = [];
             this.spadesUsed = []; //fill these using array.pop() method
-    
+
             this.heartStash = 20;
             this.diamondStash = 0;
-        } 
+            }
 
-        //handles the hearts deck
-        useHearts()
+            { //Functions
+                /*
+                this.useHearts = function()
+                    {
+                        //console.log(Player.hearts);
+                        let heartVal = this.hearts.pop();
+                        this.heartsUsed.push(heartVal);
+                        if(heartVal == 'K')
+                        {
+                            heartVal = this.hearts.pop();
+                            this.heartsUsed.push(heartVal);
+                            if(heartVal == 'J')
+                            {
+                                heartVal = this.hearts.pop();
+                                this.heartsUsed.push(heartVal);
+                                this.gainHearts(heartVal*4);
+                            }
+                            else
+                            {
+                                this.gainHearts(heartVal*2);
+                            }
+                        }
+                        else if(heartVal == 'Q')
+                        {
+                            if(this.heartsUsed.indexOf('J') == -1 && this.heartsUsed.indexOf('K') == -1)
+                            {
+                                this.heartsUsed = [];
+                                this.hearts = shuffle(baseDeck);
+                            }
+                            else
+                            {
+                                //player wins the game
+                            }
+                        }
+                        else if(heartVal == 'J')
+                        {
+                            heartVal = this.heartsUsed[this.heartsUsed.length-1];
+                            if(heartVal != null)
+                            {
+                                this.gainHearts(heartVal);
+                            }
+                        }
+                        else
+                        {
+                            this.gainHearts(heartVal);
+                        }
+                    }       
+                */
+
+            }
+        }
+        
+        
+    }
+
+    {
+    
+    function Player()
+    {
+        //this.hearts = baseDeck;
+        this.hearts = shuffle(baseDeck);
+        console.log(this.hearts);
+        this.diamonds = shuffle(baseDeck);
+        this.clubs = shuffle(baseDeck);
+        this.spades = shuffle(baseDeck);
+
+        this.heartsUsed = [];
+        this.diamondsUsed = [];
+        this.clubsUsed = [];
+        this.spadesUsed = []; //fill these using array.pop() method
+
+        this.heartStash = 20;
+        this.diamondStash = 0;
+
+
+    }
+            //handles the hearts deck
+        Player.prototype.useHearts = function()
         {
+            //console.log(Player.hearts);
             let heartVal = this.hearts.pop();
             this.heartsUsed.push(heartVal);
             if(heartVal == 'K')
@@ -101,7 +193,7 @@ GameStates.makeGame = function(game, shared)
         }
             
         //handles the diamond deck
-        useDiamonds()
+        Player.prototype.useDiamonds = function()
         {
             let diamondVal = this.diamonds.pop();
             this.diamondsUsed.push(diamondVal);
@@ -148,7 +240,7 @@ GameStates.makeGame = function(game, shared)
 
         //handles spades deck
         //enemy is a Player
-        useSpades(enemy)
+        Player.prototype.useSpades = function(enemy)
         {
             let spadeVal = this.spades.pop();
             this.spadesUsed.push(spadeVal);
@@ -195,7 +287,7 @@ GameStates.makeGame = function(game, shared)
 
         //handles clubs deck
         //enemy is a Player
-        useClubs(enemy)
+        Player.prototype.useClubs = function(enemy)
         {
             let clubVal = this.clubs.pop();
             this.clubsUsed.push(clubVal);
@@ -245,12 +337,12 @@ GameStates.makeGame = function(game, shared)
         }
 
         //basic functions for gaining/losing hearts/diamonds
-        gainHearts(val)
+        Player.prototype.gainHearts = function(val)
         {
             this.heartStash += val;
         }
 
-        loseHearts(val)
+        Player.prototype.loseHearts = function(val)
         {
             this.heartStash -= val;
             if(this.heartStash < 0)
@@ -260,7 +352,7 @@ GameStates.makeGame = function(game, shared)
             }
         }
 
-        gainDiamonds(val)
+        Player.prototype.gainDiamonds = function(val)
         {
             this.diamondStash += val;
             if(this.diamondStash >= 20)
@@ -269,7 +361,7 @@ GameStates.makeGame = function(game, shared)
             }
         }
 
-        loseDiamonds(val)
+        Player.prototype.loseDiamonds = function(val)
         {
             this.diamondStash -= val;
             if(this.diamondStash < 0)
@@ -277,8 +369,9 @@ GameStates.makeGame = function(game, shared)
                 this.diamondStash = 0;
             }
         }
-
+    
     }
+
 
     return {
 
@@ -302,7 +395,7 @@ GameStates.makeGame = function(game, shared)
             let heartButton = playerCards.create(100, 700, 'heart');
             heartButton.anchor.setTo(0.5, 0.5);
             //text = game.add.text(250, 16, '', { fill: '#ffffff' });
-            heartButton.events.onInputDown.add(player.useHearts, this);
+            heartButton.events.onInputDown.add(player.useHearts, player);
             heartButton.input.useHandCursor = true;
 
             let diamondButton = playerCards.create(300, 700, 'diamond');
@@ -336,10 +429,6 @@ GameStates.makeGame = function(game, shared)
             enemyHeart.angle = 180;
             //game.input.mouse.capture = true;
             //game.input.mousePointer.x/.y
-
-            
-            //hovering sprite code
-            //image.events.onInputOver.add(over, this);image.events.onInputOut.add(out, this);
         },
 
         update: function () {
