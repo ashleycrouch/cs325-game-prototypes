@@ -36,22 +36,30 @@ GameStates.makeGame = function(game, shared)
         game.state.start('MainMenu');
     }
 
-    //array shuffling method
-    function shuffle(a) {
-        var j, x, i;
-        for (i = a.length - 1; i > 0; i--) {
-            j = Math.floor(Math.random() * (i + 1));
-            x = a[i];
-            a[i] = a[j];
-            a[j] = x;
-        }
-        return a;
+    function Player()
+    {
+        this.hearts = shuffle(baseDeck);
+        this.diamonds = shuffle(baseDeck);
+        this.clubs = shuffle(baseDeck);
+        this.spades = shuffle(baseDeck);
+
+        this.heartsUsed = [];
+        this.diamondsUsed = [];
+        this.clubsUsed = [];
+        this.spadesUsed = []; //fill these using array.pop() method
+
+        this.heartStash = 20;
+        this.diamondStash = 0;
     }
 
-    class Player
+    //handles the hearts deck
+    Player.useHearts = function()
     {
-        constructor()
+        let heartVal = this.hearts.pop();
+        this.heartsUsed.push(heartVal);
+        if(heartVal == 'K')
         {
+<<<<<<< HEAD
             { //Variables and Initialization
             //this.hearts = baseDeck;
             this.hearts = shuffle(baseDeck);
@@ -150,225 +158,260 @@ GameStates.makeGame = function(game, shared)
         {
             //console.log(Player.hearts);
             let heartVal = this.hearts.pop();
+=======
+            heartVal = this.hearts.pop();
+>>>>>>> parent of f422f3d... moved some stuff around
             this.heartsUsed.push(heartVal);
-            if(heartVal == 'K')
+            if(heartVal == 'J')
             {
                 heartVal = this.hearts.pop();
                 this.heartsUsed.push(heartVal);
-                if(heartVal == 'J')
-                {
-                    heartVal = this.hearts.pop();
-                    this.heartsUsed.push(heartVal);
-                    this.gainHearts(heartVal*4);
-                }
-                else
-                {
-                    this.gainHearts(heartVal*2);
-                }
-            }
-            else if(heartVal == 'Q')
-            {
-                if(this.heartsUsed.indexOf('J') == -1 && this.heartsUsed.indexOf('K') == -1)
-                {
-                    this.heartsUsed = [];
-                    this.hearts = shuffle(baseDeck);
-                }
-                else
-                {
-                    //player wins the game
-                }
-            }
-            else if(heartVal == 'J')
-            {
-                heartVal = this.heartsUsed[this.heartsUsed.length-1];
-                if(heartVal != null)
-                {
-                    this.gainHearts(heartVal);
-                }
+                this.gainHearts(heartVal*4);
             }
             else
             {
-                this.gainHearts(heartVal);
+                this.gainHearts(heartVal*2);
             }
         }
-            
-        //handles the diamond deck
-        Player.prototype.useDiamonds = function()
+        else if(heartVal == 'Q')
         {
-            let diamondVal = this.diamonds.pop();
-            this.diamondsUsed.push(diamondVal);
-            if(diamondVal == 'K')
+            if(this.heartsUsed.indexOf('J') == -1 && this.heartsUsed.indexOf('K') == -1)
             {
-                diamondVal = this.diamonds.pop();
-                this.diamondsUsed.push(diamondVal);
-                if(diamondVal == 'J')
-                {
-                    diamondVal = this.diamonds.pop();
-                    this.diamondsUsed.push(diamondVal);
-                    this.gainDiamonds(diamondVal*4);
-                }
-                else
-                {
-                    this.gainDiamonds(diamondVal*2);
-                }
-            }
-            else if(diamondVal == 'Q')
-            {
-                if(this.diamondsUsed.indexOf('J') == -1 && this.diamondsUsed.indexOf('K') == -1)
-                {
-                    this.diamondsUsed = [];
-                    this.diamonds = shuffle(baseDeck);
-                }
-                else
-                {
-                    //player wins the game
-                }
-            }
-            else if(diamondVal == 'J')
-            {
-                diamondVal = this.diamondsUsed[this.diamondsUsed.length-1];
-                if(diamondVal != null)
-                {
-                    this.gainDiamonds(diamondVal);
-                }
+                this.heartsUsed = [];
+                this.hearts = shuffle(baseDeck);
             }
             else
-            {
-                this.gainDiamonds(diamondVal);
-            }
-        }
-
-        //handles spades deck
-        //enemy is a Player
-        Player.prototype.useSpades = function(enemy)
-        {
-            let spadeVal = this.spades.pop();
-            this.spadesUsed.push(spadeVal);
-            if(spadeVal == 'K')
-            {
-                spadeVal = this.spades.pop();
-                this.spadesUsed.push(spadeVal);
-                if(spadeVal == 'J')
-                {
-                    spadeVal = this.spades.pop();
-                    this.spadesUsed.push(spadeVal);
-                    enemy.loseHearts(spadeVal*4);
-                }
-                else
-                {
-                    enemy.loseHearts(spadeVal*2);
-                }
-            }
-            else if(spadeVal == 'Q')
-            {
-                if(this.spadesUsed.indexOf('J') == -1 && this.spadesUsed.indexOf('K') == -1)
-                {
-                    this.spadesUsed = [];
-                    this.spades = shuffle(baseDeck);
-                }
-                else
-                {
-                    //player wins the game
-                }
-            }
-            else if(spadeVal == 'J')
-            {
-                spadeVal = this.spadesUsed[this.spadesUsed.length-1];
-                if(spadeVal != null)
-                {
-                    enemy.loseHearts(spadeVal);
-                }
-            }
-            else
-            {
-                enemy.loseHearts(spadeVal);
-            }
-        }
-
-        //handles clubs deck
-        //enemy is a Player
-        Player.prototype.useClubs = function(enemy)
-        {
-            let clubVal = this.clubs.pop();
-            this.clubsUsed.push(clubVal);
-            if(clubVal == 'K')
-            {
-                clubVal = this.clubs.pop();
-                this.clubsUsed.push(clubVal);
-                if(clubVal == 'J')
-                {
-                    clubVal = this.clubs.pop();
-                    this.clubsUsed.push(clubVal);
-                    enemy.loseDiamonds(clubVal*4);
-                    this.gainDiamonds(clubVal*4);
-                }
-                else
-                {
-                    enemy.loseDiamonds(clubVal*2);
-                    this.gainDiamonds(clubVal*2);
-                }
-            }
-            else if(clubVal == 'Q')
-            {
-                if(this.clubsUsed.indexOf('J') == -1 && this.clubsUsed.indexOf('K') == -1)
-                {
-                    this.clubsUsed = [];
-                    this.clubs = shuffle(baseDeck);
-                }
-                else
-                {
-                    //player wins the game
-                }
-            }
-            else if(clubVal == 'J')
-            {
-                clubVal = this.clubsUsed[this.clubsUsed.length-1];
-                if(clubVal != null)
-                {
-                    enemy.loseDiamonds(clubVal);
-                    this.gainDiamonds(clubVal)
-                }
-            }
-            else
-            {
-                enemy.loseDiamonds(clubVal);
-                this.gainDiamonds(clubVal);
-            }
-        }
-
-        //basic functions for gaining/losing hearts/diamonds
-        Player.prototype.gainHearts = function(val)
-        {
-            this.heartStash += val;
-        }
-
-        Player.prototype.loseHearts = function(val)
-        {
-            this.heartStash -= val;
-            if(this.heartStash < 0)
-            {
-                this.heartStash = 0;
-                //player loses the game
-            }
-        }
-
-        Player.prototype.gainDiamonds = function(val)
-        {
-            this.diamondStash += val;
-            if(this.diamondStash >= 20)
             {
                 //player wins the game
             }
         }
-
-        Player.prototype.loseDiamonds = function(val)
+        else if(heartVal == 'J')
         {
-            this.diamondStash -= val;
-            if(this.diamondStash < 0)
+            heartVal = this.heartsUsed[this.heartsUsed.length-1];
+            if(heartVal != null)
             {
-                this.diamondStash = 0;
+                this.gainHearts(heartVal);
             }
         }
+<<<<<<< HEAD
+            
+        //handles the diamond deck
+        Player.prototype.useDiamonds = function()
+=======
+        else
+>>>>>>> parent of f422f3d... moved some stuff around
+        {
+            this.gainHearts(heartVal);
+        }
+    }
+
+    //handles the diamond deck
+    Player.useDiamonds = function()
+    {
+        let diamondVal = this.diamonds.pop();
+        this.diamondsUsed.push(diamondVal);
+        if(diamondVal == 'K')
+        {
+            diamondVal = this.diamonds.pop();
+            this.diamondsUsed.push(diamondVal);
+            if(diamondVal == 'J')
+            {
+                diamondVal = this.diamonds.pop();
+                this.diamondsUsed.push(diamondVal);
+                this.gainDiamonds(diamondVal*4);
+            }
+            else
+            {
+                this.gainDiamonds(diamondVal*2);
+            }
+        }
+        else if(diamondVal == 'Q')
+        {
+            if(this.diamondsUsed.indexOf('J') == -1 && this.diamondsUsed.indexOf('K') == -1)
+            {
+                this.diamondsUsed = [];
+                this.diamonds = shuffle(baseDeck);
+            }
+            else
+            {
+                //player wins the game
+            }
+        }
+        else if(diamondVal == 'J')
+        {
+            diamondVal = this.diamondsUsed[this.diamondsUsed.length-1];
+            if(diamondVal != null)
+            {
+                this.gainDiamonds(diamondVal);
+            }
+        }
+        else
+        {
+            this.gainDiamonds(diamondVal);
+        }
+    }
+
+<<<<<<< HEAD
+        //handles spades deck
+        //enemy is a Player
+        Player.prototype.useSpades = function(enemy)
+=======
+    //handles spades deck
+    //enemy is a Player
+    Player.useSpades = function(enemy)
+    {
+        let spadeVal = this.spades.pop();
+        this.spadesUsed.push(spadeVal);
+        if(spadeVal == 'K')
+>>>>>>> parent of f422f3d... moved some stuff around
+        {
+            spadeVal = this.spades.pop();
+            this.spadesUsed.push(spadeVal);
+            if(spadeVal == 'J')
+            {
+                spadeVal = this.spades.pop();
+                this.spadesUsed.push(spadeVal);
+                enemy.loseHearts(spadeVal*4);
+            }
+            else
+            {
+                enemy.loseHearts(spadeVal*2);
+            }
+        }
+        else if(spadeVal == 'Q')
+        {
+            if(this.spadesUsed.indexOf('J') == -1 && this.spadesUsed.indexOf('K') == -1)
+            {
+                this.spadesUsed = [];
+                this.spades = shuffle(baseDeck);
+            }
+            else
+            {
+                //player wins the game
+            }
+        }
+        else if(spadeVal == 'J')
+        {
+            spadeVal = this.spadesUsed[this.spadesUsed.length-1];
+            if(spadeVal != null)
+            {
+                enemy.loseHearts(spadeVal);
+            }
+        }
+        else
+        {
+            enemy.loseHearts(spadeVal);
+        }
+    }
+
+<<<<<<< HEAD
+        //handles clubs deck
+        //enemy is a Player
+        Player.prototype.useClubs = function(enemy)
+=======
+    //handles clubs deck
+    //enemy is a Player
+    Player.useClubs = function(enemy)
+    {
+        let clubVal = this.clubs.pop();
+        this.clubsUsed.push(clubVal);
+        if(clubVal == 'K')
+>>>>>>> parent of f422f3d... moved some stuff around
+        {
+            clubVal = this.clubs.pop();
+            this.clubsUsed.push(clubVal);
+            if(clubVal == 'J')
+            {
+                clubVal = this.clubs.pop();
+                this.clubsUsed.push(clubVal);
+                enemy.loseDiamonds(clubVal*4);
+                this.gainDiamonds(clubVal*4);
+            }
+            else
+            {
+                enemy.loseDiamonds(clubVal*2);
+                this.gainDiamonds(clubVal*2);
+            }
+        }
+        else if(clubVal == 'Q')
+        {
+            if(this.clubsUsed.indexOf('J') == -1 && this.clubsUsed.indexOf('K') == -1)
+            {
+                this.clubsUsed = [];
+                this.clubs = shuffle(baseDeck);
+            }
+            else
+            {
+                //player wins the game
+            }
+        }
+        else if(clubVal == 'J')
+        {
+            clubVal = this.clubsUsed[this.clubsUsed.length-1];
+            if(clubVal != null)
+            {
+                enemy.loseDiamonds(clubVal);
+                this.gainDiamonds(clubVal)
+            }
+        }
+<<<<<<< HEAD
+
+        //basic functions for gaining/losing hearts/diamonds
+        Player.prototype.gainHearts = function(val)
+=======
+        else
+>>>>>>> parent of f422f3d... moved some stuff around
+        {
+            enemy.loseDiamonds(clubVal);
+            this.gainDiamonds(clubVal);
+        }
+    }
+
+<<<<<<< HEAD
+        Player.prototype.loseHearts = function(val)
+=======
+    //basic functions for gaining/losing hearts/diamonds
+    Player.gainHearts = function(val)
+    {
+        this.heartStash += val;
+    }
+
+    Player.loseHearts = function(val)
+    {
+        this.heartStash -= val;
+        if(this.heartStash < 0)
+>>>>>>> parent of f422f3d... moved some stuff around
+        {
+            this.heartStash = 0;
+            //player loses the game
+        }
+    }
+
+<<<<<<< HEAD
+        Player.prototype.gainDiamonds = function(val)
+=======
+    Player.gainDiamonds = function(val)
+    {
+        this.diamondStash += val;
+        if(this.diamondStash >= 20)
+>>>>>>> parent of f422f3d... moved some stuff around
+        {
+            //player wins the game
+        }
+    }
+
+<<<<<<< HEAD
+        Player.prototype.loseDiamonds = function(val)
+=======
+    Player.loseDiamonds = function(val)
+    {
+        this.diamondStash -= val;
+        if(this.diamondStash < 0)
+>>>>>>> parent of f422f3d... moved some stuff around
+        {
+            this.diamondStash = 0;
+        }
+<<<<<<< HEAD
     
     }
 
@@ -377,12 +420,36 @@ GameStates.makeGame = function(game, shared)
 =======
 
     
+=======
+    }
+
+    //array shuffling method
+    function shuffle(array) 
+    {
+        var currentIndex = array.length, temporaryValue, randomIndex;
+      
+        // While there remain elements to shuffle...
+        while (0 !== currentIndex) {
+      
+          // Pick a remaining element...
+          randomIndex = Math.floor(Math.random() * currentIndex);
+          currentIndex -= 1;
+      
+          // And swap it with the current element.
+          temporaryValue = array[currentIndex];
+          array[currentIndex] = array[randomIndex];
+          array[randomIndex] = temporaryValue;
+        }
+        return array;
+    }
+>>>>>>> parent of f422f3d... moved some stuff around
 
 >>>>>>> parent of f5e39eb... simplified mouse over code
     return {
 
         create: function () {
             let board = game.add.sprite(0, 0, 'board');
+            //pieceGroup = game.add.group();
             player = new Player();
             enemy = new Player();
             allowInput = true;
@@ -399,6 +466,7 @@ GameStates.makeGame = function(game, shared)
             heartButton.events.onInputOut.add(function out()
                 {game.add.tween(heartButton.scale).to( { x: 1, y: 1 }, 2000, Phaser.Easing.Linear.None, true); /*try to add text to say what the button does*/
                 });
+<<<<<<< HEAD
             //text = game.add.text(250, 16, '', { fill: '#ffffff' });
 <<<<<<< HEAD
             heartButton.events.onInputDown.add(player.useHearts, player);
@@ -406,6 +474,8 @@ GameStates.makeGame = function(game, shared)
 
             heartButton.events.onInputDown.add(player.useHearts, this);
 >>>>>>> parent of f5e39eb... simplified mouse over code
+=======
+>>>>>>> parent of f422f3d... moved some stuff around
             heartButton.input.useHandCursor = true;
 
             let diamondButton = playerCards.create(300, 700, 'diamond');
