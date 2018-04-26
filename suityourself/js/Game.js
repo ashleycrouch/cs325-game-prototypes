@@ -131,6 +131,7 @@ GameStates.makeGame = function(game, shared)
     }
 
     //handles spades deck
+    //enemy is a Player
     Player.useSpades = function(enemy)
     {
         let spadeVal = this.spades.pop();
@@ -177,6 +178,7 @@ GameStates.makeGame = function(game, shared)
     }
 
     //handles clubs deck
+    //enemy is a Player
     Player.useClubs = function(enemy)
     {
         let clubVal = this.clubs.pop();
@@ -190,10 +192,12 @@ GameStates.makeGame = function(game, shared)
                 clubVal = this.clubs.pop();
                 this.clubsUsed.push(clubVal);
                 enemy.loseDiamonds(clubVal*4);
+                this.gainDiamonds(clubVal*4);
             }
             else
             {
                 enemy.loseDiamonds(clubVal*2);
+                this.gainDiamonds(clubVal*2);
             }
         }
         else if(clubVal == 'Q')
@@ -214,14 +218,17 @@ GameStates.makeGame = function(game, shared)
             if(clubVal != null)
             {
                 enemy.loseDiamonds(clubVal);
+                this.gainDiamonds(clubVal)
             }
         }
         else
         {
             enemy.loseDiamonds(clubVal);
+            this.gainDiamonds(clubVal);
         }
     }
 
+    //basic functions for gaining/losing hearts/diamonds
     Player.gainHearts = function(val)
     {
         this.heartStash += val;
@@ -230,16 +237,29 @@ GameStates.makeGame = function(game, shared)
     Player.loseHearts = function(val)
     {
         this.heartStash -= val;
+        if(this.heartStash < 0)
+        {
+            this.heartStash = 0;
+            //player loses the game
+        }
     }
 
     Player.gainDiamonds = function(val)
     {
         this.diamondStash += val;
+        if(this.diamondStash >= 20)
+        {
+            //player wins the game
+        }
     }
 
     Player.loseDiamonds = function(val)
     {
         this.diamondStash -= val;
+        if(this.diamondStash < 0)
+        {
+            this.diamondStash = 0;
+        }
     }
 
     //array shuffling method
@@ -267,12 +287,21 @@ GameStates.makeGame = function(game, shared)
         create: function () {
             let board = game.add.sprite(0, 0, 'board');
             //pieceGroup = game.add.group();
+
             playerCards = game.add.group();
+            let spadeButton = playerCards.create(game.world.centerX, 75, 'spade');
+            spadeButton.events.onInputOver.add(function over() {this.alpha = 0.5;});
+            spadeButton.events.onInputOut.add(function out(){this.alpha = 1; /*try to add text to say what the button does*/});
+
             enemyCards = game.add.group();
+            let enemySpade = enemyCards.create(game.world.centerX, 75, 'spade');
             //piece = game.add.sprite(0, 0, 'piece');
             game.input.mouse.capture = true;
             //game.input.mousePointer.x/.y
             allowInput = false;
+            
+            //hovering sprite code
+            //image.events.onInputOver.add(over, this);image.events.onInputOut.add(out, this);
         },
 
         update: function () {
