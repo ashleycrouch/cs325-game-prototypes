@@ -1,0 +1,109 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="UTF-8" />
+	<title>Phaser Basic Project Template</title>
+	<script src="js/phaser.min.js"></script>
+	<!-- Boot.js must come first since it creates the BasicGame object
+	that stores all the states. -->
+	<script src="js/Boot.js"></script>
+	<script src="js/Preloader.js"></script>
+	<script src="js/MainMenu.js"></script>
+	<script src="js/Game.js"></script>
+	<!-- main.js must come last since it references the other ones. -->
+	<script src="js/main.js"></script>
+
+<style>
+body
+{
+    color: #777;
+    font-family: "Avenir", Verdana, sans-serif;
+}
+#readme
+{
+    margin-top: 10px;
+}
+</style>
+
+</head>
+<body>
+<div id="game"></div>
+<div id="readme">
+<h2>Suit Yourself</h2>
+
+<ul>
+<li><strong>Originality:</strong>
+The art is original and the concept is original as well.
+</li>
+
+<li><strong>Technical Merit:</strong>
+What is interesting about your game technology?
+</li>
+
+<li><strong>Prototype Postmortem:</strong>
+What did you learn from this prototype?
+What was the easiest or hardest part of making it?
+</li>
+
+<li><strong>Prototype Assets:</strong>
+Did you make your prototype assets from scratch? Did you borrow them? Cite your sources here.
+<ul>
+<li>Loading screen: from template</li>
+<li>Puppy image: from template</li>
+<li>Checker Board: self-made</li>
+<li>Card Suit Symbols: self-made</li>
+</ul>
+</li>
+
+<li><strong>Prototype Closest Other Game:</strong>
+Which other game most closely resembles your game? If you are borrowing code from a Phaser Example, you must say so here. If you borrow code from elsewhere, you must say so here.
+<ul>
+<li>This game closely resembles my analog assignment, <a href="https://docs.google.com/document/d/14spa8150XQk2fgPeN8JG0W3iAXIGRgxzOR7sFQNZKG0/edit?usp=sharing">Suit Yourself</a>.</li>
+</ul>
+</li>
+
+<li><strong>High Concept:</strong>
+Suit Yourself is a fast-paced game where players’ strategies challenge each other and can topple down as quickly as a house of cards. 
+</li>
+
+<li><strong>Theme:</strong>
+No Storymatic theme was used.
+</li>
+
+<li><strong>Mandated Variety:</strong>
+State which input, randomness, genre, and play style you used in this prototype.
+</li>
+
+<li><strong>Prototype Goal:</strong>
+What game mechanic is this prototype evaluating?
+</li>
+
+<li><strong>Player Experience Goals:</strong>
+A goal is that players creatively and quickly strategize to try to win against their friends where the tables can turn at any point, with simple rules that anyone can use to turn the table in their favor. 
+</li>
+
+<li><strong>Gameplay:</strong>
+The player can choose between one of four moves, shown as the different card suits on the player's side of the board. The heart can heal the player who uses it, the diamond gives diamonds to the player who uses it, clubs steal diamonds from the other player, and spades do damage to the other player. A player can win by either killing their opponent, collecting 20 diamonds, or by playing a King, Queen, and Jack into the discard. (The details for the card effects are stated in the document linked earlier.)
+The playing capabilities aren't 100% in yet, but a lot of the setup is done. The system for the different abilities is set up, I just haven't implemented the turn-based movement or updating the information to the player. A lot of the time was spent learning about Javascript classes and how to best implement all of the possible moves that a player can do.
+</li>
+
+<li><strong>Strategies:</strong>
+The main strategies are centered around using the win conditions and focusing on them, not just for yourself, but also for your opponents. Being aware of what cards are in your and your opponents’ decks is critical to figuring out which win condition your opponents might be aiming for and centering their strategy around. This is an important method to try to tell who is closer to winning and figuring out how to counter it. 
+</li>
+
+<li><strong>Story/Setting/Premise:</strong>
+There are no characters or story explicitely said. 
+</li>
+
+<li><strong>Target Audience:</strong>
+A single sentence that describes the demographic you're trying to reach.
+</li>
+
+<li><strong>Play Time:</strong>
+A few minutes.
+</li>
+
+</ul>
+</div>
+</body>
+</html>

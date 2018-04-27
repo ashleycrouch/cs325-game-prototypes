@@ -308,7 +308,7 @@ GameStates.makeGame = function(game, shared)
 
             enemy = new Player();
             enemyHealthText = game.add.text(650, 200, 'Health = ' + enemy.getHStash(), { fill: '#ef0500ff' });
-            enemyDiamondText = game.add.text(400, 200, 'Diamond = ' + player.getDStash(), { fill: '#7444acff' });
+            enemyDiamondText = game.add.text(400, 200, 'Diamond = ' + enemy.getDStash(), { fill: '#7444acff' });
 
             allowInput = true;
 
