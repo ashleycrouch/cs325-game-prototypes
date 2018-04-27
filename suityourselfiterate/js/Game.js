@@ -2,6 +2,11 @@
 
 //The initial setup
 var playerCards;
+var heartButton;
+var diamondButton;
+var spadeButton;
+var clubButton;
+
 var enemyCards;
 
 var playerHealthText;
@@ -57,6 +62,12 @@ GameStates.makeGame = function(game, shared)
         this.useHearts = function()
         {
             let heartVal = hearts.pop();
+            var newText = game.add.text(heartButton.x, heartButton.y, 'You drew a ' + heartVal, { fill: '#ef0500ff' });
+                game.time.events.add(2000, function() {
+                    game.add.tween(newText).to({y: 0}, 1500, Phaser.Easing.Linear.None, true);
+                    game.add.tween(newText).to({alpha: 0}, 1500, Phaser.Easing.Linear.None, true);
+                }, this);
+
             //console.log(heartVal);
             heartsUsed.push(heartVal);
             if(heartVal == 'K')
@@ -333,23 +344,23 @@ GameStates.makeGame = function(game, shared)
             {
                 game.add.tween(sprite.scale).to( { x: 1.1, y: 1.1 }, 1, Phaser.Easing.Linear.None, true);
             }, this);
-            let heartButton = playerCards.create(100, 700, 'heart');
+            heartButton = playerCards.create(100, 700, 'heart');
             heartButton.anchor.setTo(0.5, 0.5);
 
             heartButton.events.onInputDown.add(player.useHearts, player);
             heartButton.input.useHandCursor = true;
 
-            let diamondButton = playerCards.create(300, 700, 'diamond');
+            diamondButton = playerCards.create(300, 700, 'diamond');
             diamondButton.anchor.setTo(0.5, 0.5);
             diamondButton.events.onInputDown.add(player.useDiamonds, player);
             diamondButton.input.useHandCursor = true;
 
-            let spadeButton = playerCards.create(500, 700, 'spade');
+            spadeButton = playerCards.create(500, 700, 'spade');
             spadeButton.anchor.setTo(0.5, 0.5);
             spadeButton.events.onInputDown.add(player.useSpades, player);
             spadeButton.input.useHandCursor = true;
 
-            let clubButton = playerCards.create(700, 700, 'club');
+            clubButton = playerCards.create(700, 700, 'club');
             clubButton.anchor.setTo(0.5, 0.5);
             clubButton.events.onInputDown.add(player.useClubs, player);
             clubButton.input.useHandCursor = true;
