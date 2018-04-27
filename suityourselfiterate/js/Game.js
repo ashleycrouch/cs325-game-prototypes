@@ -96,8 +96,15 @@ GameStates.makeGame = function(game, shared)
             }
             else
             {
+                game.add.tween(heartButton.scale).to( { x: 1, y: 1 }, 1, Phaser.Easing.Linear.None, true); 
+                var newText = game.add.text(heartButton.x, heartButton.y, '+' + heartVal, { fill: '#ef0500ff' });
+                game.time.events.add(2000, function() {
+                    game.add.tween(newText).to({y: 0}, 1500, Phaser.Easing.Linear.None, true);
+                    game.add.tween(newText).to({alpha: 0}, 1500, Phaser.Easing.Linear.None, true);
+                }, this);
                 this.gainHearts(heartVal);
             }
+            allowInput = !allowInput;
         }
 
         //handles the diamond deck
@@ -144,6 +151,7 @@ GameStates.makeGame = function(game, shared)
             {
                 this.gainDiamonds(diamondVal);
             }
+            allowInput = !allowInput;
         }
 
         //handles spades deck
@@ -191,6 +199,7 @@ GameStates.makeGame = function(game, shared)
             {
                 enemy.loseHearts(spadeVal);
             }
+            allowInput = !allowInput;
         }
 
         //handles clubs deck
@@ -242,6 +251,7 @@ GameStates.makeGame = function(game, shared)
                 enemy.loseDiamonds(clubVal);
                 this.gainDiamonds(clubVal);
             }
+            allowInput = !allowInput;
         }
 
         //basic functions for gaining/losing hearts/diamonds
@@ -330,15 +340,17 @@ GameStates.makeGame = function(game, shared)
 
             let diamondButton = playerCards.create(300, 700, 'diamond');
             diamondButton.anchor.setTo(0.5, 0.5);
-            //diamondButton.events.onInputDown.add(player.useDiamonds, player);
+            diamondButton.events.onInputDown.add(player.useDiamonds, player);
             diamondButton.input.useHandCursor = true;
 
             let spadeButton = playerCards.create(500, 700, 'spade');
             spadeButton.anchor.setTo(0.5, 0.5);
+            spadeButton.events.onInputDown.add(player.useSpades, player);
             spadeButton.input.useHandCursor = true;
 
             let clubButton = playerCards.create(700, 700, 'club');
             clubButton.anchor.setTo(0.5, 0.5);
+            clubButton.events.onInputDown.add(player.useClubs, player);
             clubButton.input.useHandCursor = true;
 
             enemyCards = game.add.group();
@@ -366,6 +378,27 @@ GameStates.makeGame = function(game, shared)
             //  Honestly, just about anything could go here. It's YOUR game after all. Eat your heart out!
             // piece.x = game.input.mousePointer.x;
             // piece.y = game.input.mousePointer.y;
+
+            if(allowInput == false)
+            {
+                let enemyMove = game.rnd.integerInRange(1, 4);
+                if(enemyMove == 1)
+                {
+                    enemy.useHearts();
+                }
+                if(enemyMove == 2)
+                {
+                    enemy.useDiamonds();
+                }
+                if(enemyMove == 3)
+                {
+                    enemy.useClubs(player);
+                }
+                if(enemyMove == 4)
+                {
+                    enemy.useSpades(player);
+                }
+            }
     
         }
     }
