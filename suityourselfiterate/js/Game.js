@@ -96,6 +96,7 @@ GameStates.makeGame = function(game, shared)
             }
             else
             {
+                //TODO: try to add some flexibility with having this work for enemy sprites OR player sprites
                 game.add.tween(heartButton.scale).to( { x: 1, y: 1 }, 1, Phaser.Easing.Linear.None, true); 
                 var newText = game.add.text(heartButton.x, heartButton.y, '+' + heartVal, { fill: '#ef0500ff' });
                 game.time.events.add(2000, function() {
