@@ -185,7 +185,6 @@ GameStates.makeGame = function(game, shared)
             let diamondVal = diamonds.pop();
             if(allowInput)
             {
-                //let heartVal = hearts.pop();
                 var newText = game.add.text(game.world.centerX, game.world.centerY, 'You drew a ' + diamondVal, { fill: '#ef0500ff' });
                 game.time.events.add(1, function() {
                     game.add.tween(newText).to({y: 0}, 1500, Phaser.Easing.Linear.None, true);
@@ -195,7 +194,6 @@ GameStates.makeGame = function(game, shared)
             }
             else
             {
-                //let heartVal = hearts.pop();
                 var newText = game.add.text(enemyDiamond.x, enemyDiamond.y, 'They drew a ' + diamondVal, { fill: '#ef0500ff' });
                 game.time.events.add(1, function() {
                     game.add.tween(newText).to({y: 0}, 1500, Phaser.Easing.Linear.None, true);
@@ -361,6 +359,10 @@ GameStates.makeGame = function(game, shared)
     //array shuffling method
     function shuffle(array) 
     {
+        // if(playerTurnText)
+        // {
+        //     playerTurnText.text = "shuffle!";
+        // }
         var currentIndex = array.length, temporaryValue, randomIndex;
       
         // While there remain elements to shuffle...
